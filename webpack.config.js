@@ -16,8 +16,15 @@ module.exports = {
       }
     ]
   },
+  resolve: {
+    extensions: ['.mjs', '.js', '.jsx']
+  },
   plugins: [
     new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({ template: './src/index.html' })
-  ]
+  ],
+  devServer: {
+    contentBase: './dist',
+    hot: true
+  }
 };
