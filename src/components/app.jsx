@@ -1,18 +1,32 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Header from './header';
 import HomePage from './homepage';
+import Auth from './auth/auth';
+import UserProvider from '../contexts/user-provider';
+
+const styles = {
+  app: {
+    backgroundColor: '#AFAFAF',
+    height: '60rem'
+  }
+};
 
 const App = () => {
   return (
-    <Router>
-      <div className="container-fluid">
-        <Header />
-        <Switch>
-          <Route path="/" component={HomePage} />
-        </Switch>
+    <UserProvider>
+      <div className="container-fluid" style={styles.app}>
+        <Router>
+          <Fragment>
+            <Header />
+            <Switch>
+              <Route path="/" exact component={HomePage} />
+              <Route path={['/login', '/signup']} component={Auth} />
+            </Switch>
+          </Fragment>
+        </Router>
       </div>
-    </Router>
+    </UserProvider>
   );
 };
 

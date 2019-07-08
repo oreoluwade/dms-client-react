@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+import { UserContext } from '../contexts';
 
 const styles = {
   white: {
@@ -9,7 +10,12 @@ const styles = {
 };
 
 function Header() {
-  const isAuthenticated = false;
+  const { isAuthenticated, resetApp } = useContext(UserContext);
+
+  const logout = () => {
+    localStorage.clear();
+    resetApp();
+  };
 
   return (
     <nav className="navbar navbar-dark bg-dark">
@@ -17,15 +23,23 @@ function Header() {
         DMS
       </h1>
       <ul className="nav justify-content-end">
-        {!isAuthenticated && (
-          <li className="nav-item">
+        <li className="nav-item">
+          {isAuthenticated ? (
+            <span
+              className="text-monospace"
+              style={styles.white}
+              onClick={logout}
+            >
+              LOGOUT
+            </span>
+          ) : (
             <Link to="/login" className="nav-link">
               <span className="text-monospace" style={styles.white}>
-                LOGIN / SIGNUP
+                {'LOGIN / SIGNUP'}
               </span>
             </Link>
-          </li>
-        )}
+          )}
+        </li>
       </ul>
     </nav>
   );
