@@ -10,7 +10,12 @@ const styles = {
 };
 
 function Header() {
-  const { isAuthenticated } = useContext(UserContext);
+  const { isAuthenticated, resetApp } = useContext(UserContext);
+
+  const logout = () => {
+    localStorage.clear();
+    resetApp();
+  };
 
   return (
     <nav className="navbar navbar-dark bg-dark">
@@ -19,11 +24,21 @@ function Header() {
       </h1>
       <ul className="nav justify-content-end">
         <li className="nav-item">
-          <Link to="/login" className="nav-link">
-            <span className="text-monospace" style={styles.white}>
-              {isAuthenticated ? 'LOGOUT' : 'LOGIN / SIGNUP'}
+          {isAuthenticated ? (
+            <span
+              className="text-monospace"
+              style={styles.white}
+              onClick={logout}
+            >
+              LOGOUT
             </span>
-          </Link>
+          ) : (
+            <Link to="/login" className="nav-link">
+              <span className="text-monospace" style={styles.white}>
+                {'LOGIN / SIGNUP'}
+              </span>
+            </Link>
+          )}
         </li>
       </ul>
     </nav>
