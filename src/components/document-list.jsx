@@ -12,7 +12,7 @@ function DocumentList({ documents }) {
         <div className="col-sm-4 mb-2" key={document.id}>
           <div className="card">
             <div className="card-body">
-              <h5 className="card-title">{document.title}</h5>
+              <h5 className="card-title text-primary">{document.title}</h5>
               <p className="card-text">{renderContentPart(document.content)}</p>
               <a href="#" className="btn btn-primary">
                 See more
