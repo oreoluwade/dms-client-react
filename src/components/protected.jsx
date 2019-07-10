@@ -25,8 +25,8 @@ function ProtectedRoute({ component: ComponentToBeRendered, ...routeProps }) {
 }
 
 ProtectedRoute.propTypes = {
-  location: PropTypes.object.isRequired,
-  component: PropTypes.object
+  location: PropTypes.object,
+  component: PropTypes.func
 };
 
 export default ProtectedRoute;
