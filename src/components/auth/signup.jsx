@@ -35,7 +35,7 @@ function Signup({ history }) {
       onCompleted={data => {
         console.log('completed', data);
         localStorage.setItem('token', data.registerUser.token);
-        history.push('/');
+        history.push('/dashboard');
       }}
       onError={e => {
         console.log('ERROR', e);

@@ -41,3 +41,16 @@ export const GET_USER_DETAILS = gql`
     }
   }
 `;
+
+export const GET_MY_DOCUMENTS = gql`
+  query {
+    getMyDocuments {
+      id
+      title
+      createdAt
+      updatedAt
+      content
+      access
+    }
+  }
+`;

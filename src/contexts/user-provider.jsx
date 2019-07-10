@@ -1,8 +1,9 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Query } from 'react-apollo';
+import { useQuery } from 'react-apollo-hooks';
 import UserContext from './user-context';
-import { GET_USER_DETAILS } from '../queries';
+import { GET_USER_DETAILS, GET_MY_DOCUMENTS } from '../queries';
 import transformToken from '../util/transformToken';
 
 const reducer = (staleState, newState) => {
@@ -15,13 +16,27 @@ const tokenDetails =
   checkAuthStatus && transformToken(localStorage.getItem('token'));
 
 const UserProvider = ({ children }) => {
-  const [{ user, isAuthenticated }, setState] = useReducer(reducer, {
-    user: null,
-    isAuthenticated: checkAuthStatus()
+  const [{ user, isAuthenticated, myDocuments }, setState] = useReducer(
+    reducer,
+    {
+      user: null,
+      isAuthenticated: checkAuthStatus(),
+      myDocuments: []
+    }
+  );
+
+  const { data: myDocumentsData } = useQuery(GET_MY_DOCUMENTS, {
+    skip: !user
   });
 
+  useEffect(() => {
+    if (myDocumentsData && myDocumentsData.getMyDocuments) {
+      setState({ myDocuments: myDocumentsData.getMyDocuments });
+    }
+  }, [myDocumentsData]);
+
   const resetApp = () => {
-    setState({ user: null, isAuthenticated: false });
+    setState({ user: null, isAuthenticated: false, myDocuments: [] });
   };
 
   return (
@@ -34,7 +49,9 @@ const UserProvider = ({ children }) => {
       }}
     >
       {() => (
-        <UserContext.Provider value={{ user, resetApp, isAuthenticated }}>
+        <UserContext.Provider
+          value={{ user, resetApp, isAuthenticated, myDocuments }}
+        >
           {children}
         </UserContext.Provider>
       )}

@@ -4,6 +4,8 @@ import Header from './header';
 import HomePage from './homepage';
 import Auth from './auth/auth';
 import UserProvider from '../contexts/user-provider';
+import Dashboard from './dashboard';
+import ProtectedRoute from './protected';
 
 const styles = {
   app: {
@@ -15,13 +17,14 @@ const styles = {
 const App = () => {
   return (
     <UserProvider>
-      <div className="container-fluid" style={styles.app}>
+      <div className="container-fluid text-monospace" style={styles.app}>
         <Router>
           <Fragment>
             <Header />
             <Switch>
               <Route path="/" exact component={HomePage} />
               <Route path={['/login', '/signup']} component={Auth} />
+              <ProtectedRoute path="/dashboard" component={Dashboard} />
             </Switch>
           </Fragment>
         </Router>
