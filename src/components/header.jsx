@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, Fragment } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../contexts';
 
@@ -10,18 +10,44 @@ const styles = {
 };
 
 function Header() {
-  const { isAuthenticated, resetApp } = useContext(UserContext);
+  const { isAuthenticated, resetApp, user } = useContext(UserContext);
 
   const logout = () => {
     localStorage.clear();
     resetApp();
+    history.push('/');
   };
 
   return (
     <nav className="navbar navbar-dark bg-dark">
-      <h1 className="navbar-brand text-monospace font-weight-bold display-4">
-        DMS
-      </h1>
+      <h1 className="navbar-brand font-weight-bold display-4">DMS</h1>
+      <ul className="nav justify-content-center" style={styles.white}>
+        <li className="nav-item active">
+          <Link to="/documents" className="nav-link">
+            DOCUMENTS <span className="sr-only">(current)</span>
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link to="/profile" className="nav-link">
+            PROFILE
+          </Link>
+        </li>
+        {user && user.role === 'ADMIN' && (
+          <Fragment>
+            <li className="nav-item">
+              <Link to="/users" className="nav-link">
+                MANAGE USERS
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/statistics" className="nav-link">
+                STATISTICS
+              </Link>
+            </li>
+          </Fragment>
+        )}
+      </ul>
+
       <ul className="nav justify-content-end">
         <li className="nav-item">
           {isAuthenticated ? (
