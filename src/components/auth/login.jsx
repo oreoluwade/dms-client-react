@@ -32,7 +32,7 @@ function Login({ history }) {
       mutation={LOGIN}
       onCompleted={data => {
         localStorage.setItem('token', data.login.token);
-        history.push('/dashboard');
+        history.push('/documents');
       }}
       onError={error => {
         console.log('ERROR', error);

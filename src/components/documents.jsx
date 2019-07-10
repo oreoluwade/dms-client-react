@@ -6,7 +6,7 @@ const filterDocuments = (docs, type) => {
   return docs.filter(doc => doc.access === type);
 };
 
-function Dashboard() {
+function DocumentsPage() {
   const { myDocuments } = useContext(UserContext);
 
   const publicDocuments = myDocuments && filterDocuments(myDocuments, 'PUBLIC');
@@ -97,4 +97,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default DocumentsPage;

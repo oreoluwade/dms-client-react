@@ -4,7 +4,7 @@ import Header from './header';
 import HomePage from './homepage';
 import Auth from './auth/auth';
 import UserProvider from '../contexts/user-provider';
-import Dashboard from './dashboard';
+import DocumentsPage from './documents';
 import ProtectedRoute from './protected';
 import NotFound from './not-found';
 
@@ -25,7 +25,7 @@ const App = () => {
             <Switch>
               <Route path="/" exact component={HomePage} />
               <Route path={['/login', '/signup']} component={Auth} />
-              <ProtectedRoute path="/dashboard" component={Dashboard} />
+              <ProtectedRoute path="/documents" component={DocumentsPage} />
               <Route component={NotFound} />
             </Switch>
           </Fragment>
