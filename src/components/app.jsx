@@ -17,7 +17,7 @@ const styles = {
 const App = () => {
   return (
     <UserProvider>
-      <div className="container-fluid" style={styles.app}>
+      <div className="container-fluid text-monospace" style={styles.app}>
         <Router>
           <Fragment>
             <Header />
