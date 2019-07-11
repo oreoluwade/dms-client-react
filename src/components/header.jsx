@@ -1,5 +1,7 @@
 import React, { useContext, Fragment } from 'react';
-import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { Link, withRouter } from 'react-router-dom';
+import { withApollo } from 'react-apollo';
 import { UserContext } from '../contexts';
 
 const styles = {
@@ -9,12 +11,13 @@ const styles = {
   }
 };
 
-function Header() {
+function Header({ history, client }) {
   const { isAuthenticated, resetApp, user } = useContext(UserContext);
 
   const logout = () => {
     localStorage.clear();
     resetApp();
+    client.resetStore();
     history.push('/');
   };
 
@@ -22,16 +25,20 @@ function Header() {
     <nav className="navbar navbar-dark bg-dark">
       <h1 className="navbar-brand font-weight-bold display-4">DMS</h1>
       <ul className="nav justify-content-center" style={styles.white}>
-        <li className="nav-item active">
-          <Link to="/documents" className="nav-link">
-            DOCUMENTS <span className="sr-only">(current)</span>
-          </Link>
-        </li>
-        <li className="nav-item">
-          <Link to="/profile" className="nav-link">
-            PROFILE
-          </Link>
-        </li>
+        {isAuthenticated && (
+          <Fragment>
+            <li className="nav-item active">
+              <Link to="/documents" className="nav-link">
+                DOCUMENTS <span className="sr-only">(current)</span>
+              </Link>
+            </li>
+            <li className="nav-item">
+              <Link to="/profile" className="nav-link">
+                PROFILE
+              </Link>
+            </li>
+          </Fragment>
+        )}
         {user && user.role === 'ADMIN' && (
           <Fragment>
             <li className="nav-item">
@@ -71,4 +78,9 @@ function Header() {
   );
 }
 
-export default Header;
+Header.propTypes = {
+  client: PropTypes.object,
+  history: PropTypes.object
+};
+
+export default withApollo(withRouter(Header));
