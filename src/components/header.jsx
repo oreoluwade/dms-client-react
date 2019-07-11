@@ -1,7 +1,7 @@
 import React, { useContext, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { useApolloClient } from 'react-apollo-hooks';
 import { Link, withRouter } from 'react-router-dom';
-import { withApollo } from 'react-apollo';
 import { UserContext } from '../contexts';
 
 const styles = {
@@ -11,21 +11,28 @@ const styles = {
   }
 };
 
-function Header({ history, client }) {
-  const { isAuthenticated, resetApp, user } = useContext(UserContext);
+function Header({ history, location }) {
+  const client = useApolloClient();
+  const { isAuthenticated, user, handleAuthStatusChange } = useContext(
+    UserContext
+  );
+
+  const excludedRoutes = ['/login', '/signup'];
+  const shouldShowTabs =
+    isAuthenticated && !excludedRoutes.includes(location.pathname);
 
   const logout = () => {
     localStorage.clear();
-    resetApp();
-    client.resetStore();
-    history.push('/');
+    handleAuthStatusChange(false);
+    client.cache.reset();
+    history.push('/login');
   };
 
   return (
     <nav className="navbar navbar-dark bg-dark">
       <h1 className="navbar-brand font-weight-bold display-4">DMS</h1>
       <ul className="nav justify-content-center" style={styles.white}>
-        {isAuthenticated && (
+        {shouldShowTabs && (
           <Fragment>
             <li className="nav-item active">
               <Link to="/documents" className="nav-link">
@@ -39,7 +46,7 @@ function Header({ history, client }) {
             </li>
           </Fragment>
         )}
-        {user && user.role === 'ADMIN' && (
+        {shouldShowTabs && user && user.role === 'ADMIN' && (
           <Fragment>
             <li className="nav-item">
               <Link to="/users" className="nav-link">
@@ -79,8 +86,8 @@ function Header({ history, client }) {
 }
 
 Header.propTypes = {
-  client: PropTypes.object,
-  history: PropTypes.object
+  history: PropTypes.object.isRequired,
+  location: PropTypes.object.isRequired
 };
 
-export default withApollo(withRouter(Header));
+export default withRouter(Header);

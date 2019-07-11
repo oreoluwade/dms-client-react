@@ -2,21 +2,16 @@ import React, { useContext, Fragment } from 'react';
 import { UserContext } from '../contexts';
 import DocumentList from './document-list';
 
-const filterDocuments = (docs, type) => {
-  return docs.filter(doc => doc.access === type);
-};
-
 function DocumentsPage() {
-  const { myDocuments } = useContext(UserContext);
+  const { user, myDocuments } = useContext(UserContext);
 
-  const publicDocuments = myDocuments && filterDocuments(myDocuments, 'PUBLIC');
-  const privateDocuments =
-    myDocuments && filterDocuments(myDocuments, 'PRIVATE');
-  const roleDocuments = myDocuments && filterDocuments(myDocuments, 'ROLE');
+  const filterDocuments = (docs, type) => {
+    return docs && docs.filter(doc => doc.access === type);
+  };
 
   return (
     <Fragment>
-      {myDocuments && (
+      {user && myDocuments && (
         <Fragment>
           <ul
             className="nav nav-tabs justify-content-center"
@@ -70,7 +65,9 @@ function DocumentsPage() {
               role="tabpanel"
               aria-labelledby="publicDocs-tab"
             >
-              <DocumentList documents={publicDocuments} />
+              <DocumentList
+                documents={filterDocuments(myDocuments, 'PUBLIC')}
+              />
             </div>
             <div
               className="tab-pane fade"
@@ -78,9 +75,9 @@ function DocumentsPage() {
               role="tabpanel"
               aria-labelledby="privateDocs-tab"
             >
-              {privateDocuments && (
-                <DocumentList documents={privateDocuments} />
-              )}
+              <DocumentList
+                documents={filterDocuments(myDocuments, 'PRIVATE')}
+              />
             </div>
             <div
               className="tab-pane fade"
@@ -88,7 +85,7 @@ function DocumentsPage() {
               role="tabpanel"
               aria-labelledby="roleDocs-tab"
             >
-              {roleDocuments && <DocumentList documents={roleDocuments} />}
+              <DocumentList documents={filterDocuments(myDocuments, 'ROLE')} />
             </div>
           </div>
         </Fragment>

@@ -1,6 +1,5 @@
 import React, { useReducer, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Query } from 'react-apollo';
 import { useQuery } from 'react-apollo-hooks';
 import UserContext from './user-context';
 import { GET_USER_DETAILS, GET_MY_DOCUMENTS, GET_ALL_USERS } from '../queries';
@@ -10,60 +9,70 @@ const reducer = (staleState, newState) => {
   return { ...staleState, ...newState };
 };
 
-const checkAuthStatus = () => !!localStorage.getItem('token');
-
-const tokenDetails =
-  checkAuthStatus && transformToken(localStorage.getItem('token'));
-
 const UserProvider = ({ children }) => {
+  const initialAuthStatus = !!localStorage.getItem('token');
+  const tokenDetails =
+    initialAuthStatus && transformToken(localStorage.getItem('token'));
+
   const [
     { user, isAuthenticated, myDocuments, allUsers },
     setState
   ] = useReducer(reducer, {
     user: null,
-    isAuthenticated: checkAuthStatus(),
+    isAuthenticated: initialAuthStatus,
     myDocuments: [],
-    allUsers: null
+    allUsers: []
+  });
+
+  const { data: userDetails } = useQuery(GET_USER_DETAILS, {
+    variables: { id: tokenDetails.id },
+    skip: !isAuthenticated
   });
 
   const { data: myDocumentsData } = useQuery(GET_MY_DOCUMENTS, {
     skip: !user
   });
 
-  const { data: allUsersData } = useQuery(GET_ALL_USERS, {
+  const { data: allUsersData, error: allUsersError } = useQuery(GET_ALL_USERS, {
     skip: !user || (user && user.role !== 'ADMIN')
   });
+
+  useEffect(() => {
+    if (userDetails && userDetails.getUser) {
+      setState({ user: userDetails.getUser });
+    }
+  }, [userDetails]);
 
   useEffect(() => {
     if (myDocumentsData && myDocumentsData.getMyDocuments) {
       setState({ myDocuments: myDocumentsData.getMyDocuments });
     }
+  }, [myDocumentsData]);
+
+  useEffect(() => {
     if (allUsersData && allUsersData.getAllUsers) {
       setState({ allUsers: allUsersData.getAllUsers });
     }
-  }, [myDocumentsData, allUsersData]);
+    if (allUsersError) {
+      console.log(allUsersError);
+    }
+  }, [allUsersData, allUsersError]);
 
-  const resetApp = () => {
-    setState({ user: null, isAuthenticated: false, myDocuments: [] });
-  };
+  const handleAuthStatusChange = newValue =>
+    setState({ isAuthenticated: newValue });
 
   return (
-    <Query
-      query={GET_USER_DETAILS}
-      variables={{ id: tokenDetails.id }}
-      skip={!(tokenDetails && tokenDetails.id)}
-      onCompleted={data => {
-        setState({ user: data.getUser });
+    <UserContext.Provider
+      value={{
+        user,
+        isAuthenticated,
+        myDocuments,
+        allUsers,
+        handleAuthStatusChange
       }}
     >
-      {() => (
-        <UserContext.Provider
-          value={{ user, resetApp, isAuthenticated, myDocuments, allUsers }}
-        >
-          {children}
-        </UserContext.Provider>
-      )}
-    </Query>
+      {children}
+    </UserContext.Provider>
   );
 };
 

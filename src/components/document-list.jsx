@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const renderContentPart = content => {
-  return content.length > 50 ? `${content.slice(0, 60)}...` : content;
+  return content && content.length > 50
+    ? `${content.slice(0, 60)}...`
+    : content;
 };
 
 function DocumentList({ documents }) {
