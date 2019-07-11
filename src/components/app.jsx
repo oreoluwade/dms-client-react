@@ -11,6 +11,7 @@ import ManageUsers from './manage-users';
 import Profile from './profile';
 import Statistics from './statistics';
 import CreateDocumentButton from './create-document-button';
+import CreateDocumentPage from './create-document-page';
 
 const styles = {
   app: {
@@ -33,6 +34,11 @@ const App = () => {
               <ProtectedRoute path="/users" component={ManageUsers} />
               <ProtectedRoute path="/statistics" component={Statistics} />
               <ProtectedRoute path="/profile" component={Profile} />
+              <ProtectedRoute
+                path="/create-document"
+                exact
+                component={CreateDocumentPage}
+              />
               <Route component={NotFound} />
             </Switch>
             <CreateDocumentButton />
