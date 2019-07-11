@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { useApolloClient } from 'react-apollo-hooks';
 import { Mutation } from 'react-apollo';
 import { LOGIN } from '../../queries';
+import { UserContext } from '../../contexts';
 
 const styles = {
   divider: {
@@ -14,6 +16,8 @@ const styles = {
 };
 
 function Login({ history }) {
+  const client = useApolloClient();
+  const { handleAuthStatusChange } = useContext(UserContext);
   const [values, setValues] = useState({
     identifier: '',
     password: ''
@@ -32,7 +36,9 @@ function Login({ history }) {
       mutation={LOGIN}
       onCompleted={data => {
         localStorage.setItem('token', data.login.token);
-        history.push('/dashboard');
+        handleAuthStatusChange(true);
+        client.resetStore();
+        history.push('/documents');
       }}
       onError={error => {
         console.log('ERROR', error);
