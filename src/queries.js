@@ -54,3 +54,18 @@ export const GET_MY_DOCUMENTS = gql`
     }
   }
 `;
+
+export const GET_ALL_USERS = gql`
+  query {
+    getAllUsers {
+      username
+      email
+      id
+      role
+      createdAt
+      documents {
+        id
+      }
+    }
+  }
+`;
