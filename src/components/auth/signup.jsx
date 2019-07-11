@@ -3,6 +3,7 @@ import { withRouter } from 'react-router-dom';
 import { Mutation } from 'react-apollo';
 import PropTypes from 'prop-types';
 import { REGISTER } from '../../queries';
+import { addToStorage } from '../../util';
 
 const styles = {
   divider: {
@@ -33,8 +34,7 @@ function Signup({ history }) {
     <Mutation
       mutation={REGISTER}
       onCompleted={data => {
-        console.log('completed', data);
-        localStorage.setItem('token', data.registerUser.token);
+        addToStorage({ token: data.login.token });
         history.push('/documents');
       }}
       onError={e => {

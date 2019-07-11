@@ -5,6 +5,7 @@ import { useApolloClient } from 'react-apollo-hooks';
 import { Mutation } from 'react-apollo';
 import { LOGIN } from '../../queries';
 import { UserContext } from '../../contexts';
+import { addToStorage } from '../../util';
 
 const styles = {
   divider: {
@@ -35,8 +36,8 @@ function Login({ history }) {
     <Mutation
       mutation={LOGIN}
       onCompleted={data => {
-        localStorage.setItem('token', data.login.token);
         handleAuthStatusChange(true);
+        addToStorage({ token: data.login.token });
         client.resetStore();
         history.push('/documents');
       }}

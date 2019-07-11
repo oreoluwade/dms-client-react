@@ -3,16 +3,16 @@ import PropTypes from 'prop-types';
 import { useQuery } from 'react-apollo-hooks';
 import UserContext from './user-context';
 import { GET_USER_DETAILS, GET_MY_DOCUMENTS, GET_ALL_USERS } from '../queries';
-import { transformToken } from '../util';
+import { transformToken, getFromStorage } from '../util';
 
 const reducer = (staleState, newState) => {
   return { ...staleState, ...newState };
 };
 
 const UserProvider = ({ children }) => {
-  const initialAuthStatus = !!localStorage.getItem('token');
+  const initialAuthStatus = !!getFromStorage('dms-apolap-token');
   const tokenDetails =
-    initialAuthStatus && transformToken(localStorage.getItem('token'));
+    initialAuthStatus && transformToken(getFromStorage('dms-apolap-token'));
 
   const [
     { user, isAuthenticated, myDocuments, allUsers },
