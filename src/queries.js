@@ -69,3 +69,13 @@ export const GET_ALL_USERS = gql`
     }
   }
 `;
+
+export const CREATE_DOCUMENT = gql`
+  mutation CREATE_DOCUMENT($title: String!, $content: String!) {
+    createDocument(title: $title, content: $content) {
+      title
+      content
+      id
+    }
+  }
+`;
