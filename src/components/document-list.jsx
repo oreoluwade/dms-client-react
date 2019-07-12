@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { stripHtmlTags } from '../util';
 
 const renderContentPart = content => {
-  return content && content.length > 50
-    ? `${content.slice(0, 60)}...`
-    : content;
+  const normalizedText = stripHtmlTags(content);
+  return normalizedText && normalizedText.length > 50
+    ? `${normalizedText.slice(0, 60)}...`
+    : normalizedText;
 };
 
 function DocumentList({ documents }) {
