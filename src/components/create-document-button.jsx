@@ -13,7 +13,7 @@ const styles = {
   }
 };
 
-const unallowedLocations = ['/login', '/', '/signup'];
+const unallowedLocations = ['/login', '/', '/signup', '/create-document'];
 
 function CreateDocumentButton({ location }) {
   const iconIsVisible = !unallowedLocations.includes(location.pathname);
