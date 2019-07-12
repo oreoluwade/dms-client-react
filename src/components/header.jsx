@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useApolloClient } from 'react-apollo-hooks';
 import { Link, withRouter } from 'react-router-dom';
 import { UserContext } from '../contexts';
+import { clearStorage } from '../util';
 
 const styles = {
   white: {
@@ -22,8 +23,8 @@ function Header({ history, location }) {
     isAuthenticated && !excludedRoutes.includes(location.pathname);
 
   const logout = () => {
-    localStorage.clear();
     handleAuthStatusChange(false);
+    clearStorage();
     client.cache.reset();
     history.push('/login');
   };
