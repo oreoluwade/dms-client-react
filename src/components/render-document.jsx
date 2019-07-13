@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import Swal from 'sweetalert2';
 import { withRouter } from 'react-router-dom';
 import { Mutation } from 'react-apollo';
 import { useQuery } from 'react-apollo-hooks';
@@ -88,6 +89,14 @@ function RenderDocument({ match, history }) {
         <Mutation
           mutation={UPDATE_DOCUMENT}
           onCompleted={() => {
+            Swal.fire({
+              position: 'top-end',
+              type: 'success',
+              title: 'Document updated!',
+              showConfirmButton: false,
+              timer: 1500,
+              toast: true
+            });
             history.push('/documents');
           }}
           refetchQueries={() => [

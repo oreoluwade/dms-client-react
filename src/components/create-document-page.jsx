@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import PropTypes from 'prop-types';
 import { Mutation } from 'react-apollo';
 import CKEditor from '@ckeditor/ckeditor5-react';
@@ -61,6 +62,14 @@ function CreateDocumentPage({ history }) {
         mutation={CREATE_DOCUMENT}
         onCompleted={async () => {
           await resetFields();
+          Swal.fire({
+            position: 'top-end',
+            type: 'success',
+            title: 'Document saved',
+            showConfirmButton: false,
+            timer: 1500,
+            toast: true
+          });
           history.push('/documents');
         }}
         refetchQueries={() => [
@@ -72,14 +81,14 @@ function CreateDocumentPage({ history }) {
           console.log('error', error);
         }}
       >
-        {createDocument => (
+        {mutate => (
           <button
             type="button"
             className="btn btn-primary btn-lg mt-3 ml-auto mr-3"
             style={styles.submitButton}
             onClick={async event => {
               event.preventDefault();
-              await createDocument({
+              await mutate({
                 variables: {
                   title,
                   content
