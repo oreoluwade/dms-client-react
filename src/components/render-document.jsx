@@ -75,7 +75,6 @@ function RenderDocument({ match }) {
             console.log('Editor is ready to use!', editor);
           }}
           onChange={(event, editor) => {
-            // event.preventDefault();
             const data = editor.getData();
             setContent(data);
           }}

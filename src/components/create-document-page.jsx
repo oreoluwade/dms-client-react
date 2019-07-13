@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { withRouter } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { Mutation } from 'react-apollo';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { CREATE_DOCUMENT } from '../queries';
+import { CREATE_DOCUMENT, GET_MY_DOCUMENTS } from '../queries';
 
 const styles = {
   editorContainer: {
@@ -13,7 +15,7 @@ const styles = {
   }
 };
 
-function CreateDocumentPage() {
+function CreateDocumentPage({ history }) {
   const [content, setContent] = useState('');
   const [title, setTitle] = useState('');
 
@@ -51,16 +53,21 @@ function CreateDocumentPage() {
           console.log('Editor is ready to use!', editor);
         }}
         onChange={(event, editor) => {
-          event.preventDefault();
           const data = editor.getData();
           setContent(data);
         }}
       />
       <Mutation
         mutation={CREATE_DOCUMENT}
-        onCompleted={() => {
-          resetFields();
+        onCompleted={async () => {
+          await resetFields();
+          history.push('/documents');
         }}
+        refetchQueries={() => [
+          {
+            query: GET_MY_DOCUMENTS
+          }
+        ]}
         onError={error => {
           console.log('error', error);
         }}
@@ -88,4 +95,8 @@ function CreateDocumentPage() {
   );
 }
 
-export default CreateDocumentPage;
+CreateDocumentPage.propTypes = {
+  history: PropTypes.object
+};
+
+export default withRouter(CreateDocumentPage);
