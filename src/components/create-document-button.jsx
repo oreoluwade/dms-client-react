@@ -4,12 +4,16 @@ import { Link, withRouter } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const styles = {
+  linkStyle: {
+    textDecoration: 'none'
+  },
   iconStyle: {
     position: 'absolute',
     height: '4rem',
     width: '4rem',
     right: '3rem',
-    bottom: '3rem'
+    bottom: '3rem',
+    color: 'green'
   }
 };
 
@@ -19,7 +23,7 @@ function CreateDocumentButton({ location }) {
   const iconIsVisible = !unallowedLocations.includes(location.pathname);
 
   return iconIsVisible ? (
-    <Link to="/create-document">
+    <Link to="/create-document" style={styles.linkStyle}>
       <FontAwesomeIcon
         icon="pencil-alt"
         className="fa-2x"
