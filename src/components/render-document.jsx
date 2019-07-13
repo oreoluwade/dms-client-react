@@ -137,7 +137,8 @@ function RenderDocument({ match, history }) {
                   variables: {
                     title,
                     content,
-                    id: match.params.documentId
+                    id: match.params.documentId,
+                    access
                   }
                 });
               }}
