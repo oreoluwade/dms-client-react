@@ -19,10 +19,16 @@ const styles = {
 function CreateDocumentPage({ history }) {
   const [content, setContent] = useState('');
   const [title, setTitle] = useState('');
+  const [access, setAccess] = useState('PUBLIC');
 
   const handleTitleChange = e => {
     e.preventDefault();
     setTitle(e.target.value);
+  };
+
+  const handleAccessChange = e => {
+    e.preventDefault();
+    setAccess(e.target.value);
   };
 
   const resetFields = () => {
@@ -35,16 +41,31 @@ function CreateDocumentPage({ history }) {
       className="d-flex flex-column mr-auto ml-auto mt-5 w-75 bg-light"
       style={styles.editorContainer}
     >
-      <div className="input-group mb-3">
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Document Title..."
-          aria-label="Title"
-          aria-describedby="document title"
-          value={title}
-          onChange={handleTitleChange}
-        />
+      <div className="row pl-0 pr-0">
+        <div className="col-9 pr-0">
+          <input
+            type="text"
+            className="form-control"
+            placeholder="Document Title..."
+            aria-label="Title"
+            aria-describedby="document title"
+            value={title}
+            onChange={handleTitleChange}
+          />
+        </div>
+        <div className="col">
+          <select
+            className="custom-select col"
+            id="inputGroupSelect"
+            value={access}
+            onChange={handleAccessChange}
+          >
+            <option defaultValue>Select Document Access Level</option>
+            <option value="PUBLIC">PUBLIC</option>
+            <option value="PRIVATE">PRIVATE</option>
+            <option value="ROLE">ROLE</option>
+          </select>
+        </div>
       </div>
       <CKEditor
         editor={ClassicEditor}
@@ -91,7 +112,8 @@ function CreateDocumentPage({ history }) {
               await mutate({
                 variables: {
                   title,
-                  content
+                  content,
+                  access
                 }
               });
             }}
