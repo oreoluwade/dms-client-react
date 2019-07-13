@@ -51,6 +51,9 @@ export const GET_MY_DOCUMENTS = gql`
       updatedAt
       content
       access
+      owner {
+        id
+      }
     }
   }
 `;
