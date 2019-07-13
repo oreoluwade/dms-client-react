@@ -51,6 +51,9 @@ export const GET_MY_DOCUMENTS = gql`
       updatedAt
       content
       access
+      owner {
+        id
+      }
     }
   }
 `;
@@ -76,6 +79,46 @@ export const CREATE_DOCUMENT = gql`
       title
       content
       id
+    }
+  }
+`;
+
+export const GET_ONE_DOCUMENT = gql`
+  query GET_ONE_DOCUMENT($id: ID!) {
+    getDocument(id: $id) {
+      id
+      title
+      createdAt
+      updatedAt
+      content
+      access
+      owner {
+        id
+      }
+    }
+  }
+`;
+
+export const UPDATE_DOCUMENT = gql`
+  mutation UPDATE_DOCUMENT($id: ID!, $title: String, $content: String) {
+    updateDocument(id: $id, title: $title, content: $content) {
+      id
+      title
+      createdAt
+      updatedAt
+      content
+      access
+      owner {
+        id
+      }
+    }
+  }
+`;
+
+export const DELETE_DOCUMENT = gql`
+  mutation DELETE_DOCUMENT($id: ID!) {
+    deleteDocument(id: $id) {
+      message
     }
   }
 `;
