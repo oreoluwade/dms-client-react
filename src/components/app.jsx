@@ -12,6 +12,7 @@ import Profile from './profile';
 import Statistics from './statistics';
 import CreateDocumentButton from './create-document-button';
 import CreateDocumentPage from './create-document-page';
+import RenderDocument from './render-document';
 
 const styles = {
   app: {
@@ -38,6 +39,11 @@ const App = () => {
                 path="/create-document"
                 exact
                 component={CreateDocumentPage}
+              />
+              <ProtectedRoute
+                path="/document/:documentId"
+                exact
+                component={RenderDocument}
               />
               <Route component={NotFound} />
             </Switch>
