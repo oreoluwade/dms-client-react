@@ -10,8 +10,8 @@ import { DELETE_DOCUMENT, GET_MY_DOCUMENTS } from '../queries';
 
 const swalWithBootstrapButtons = Swal.mixin({
   customClass: {
-    confirmButton: 'btn btn-success',
-    cancelButton: 'btn btn-danger'
+    confirmButton: 'btn btn-primary ml-2',
+    cancelButton: 'btn btn-danger mr-2'
   },
   buttonsStyling: false
 });
