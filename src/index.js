@@ -5,11 +5,16 @@ import ReactDOM from 'react-dom';
 import { ApolloProvider } from 'react-apollo';
 import { ApolloProvider as ApolloHooksProvider } from 'react-apollo-hooks';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import {
+  faPencilAlt,
+  faFolderOpen,
+  faEdit,
+  faTrashAlt
+} from '@fortawesome/free-solid-svg-icons';
 import App from './components/app';
 import client from './apollo-client';
 
-library.add(faPencilAlt);
+library.add(faPencilAlt, faFolderOpen, faEdit, faTrashAlt);
 
 ReactDOM.render(
   <ApolloProvider client={client}>
