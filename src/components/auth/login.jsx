@@ -42,14 +42,14 @@ function Login({ history }) {
         history.push('/documents');
       }}
       onError={error => {
-        console.log('ERROR', error);
+        console.log('ERROR', error.message);
       }}
     >
-      {login => (
+      {mutate => (
         <form
           onSubmit={async e => {
             e.preventDefault();
-            await login({
+            await mutate({
               variables: values
             });
           }}

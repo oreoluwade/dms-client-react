@@ -6,7 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { stripHtmlTags } from '../util';
 import { UserContext } from '../contexts';
 import RenderIconLink from './render-icon-link';
-import { DELETE_DOCUMENT, GET_MY_DOCUMENTS } from '../queries';
+import { DELETE_DOCUMENT, GET_ALL_DOCUMENTS } from '../queries';
 
 const swalWithBootstrapButtons = Swal.mixin({
   customClass: {
@@ -63,7 +63,7 @@ function DocumentList({ documents }) {
                       }}
                       refetchQueries={() => [
                         {
-                          query: GET_MY_DOCUMENTS
+                          query: GET_ALL_DOCUMENTS
                         }
                       ]}
                       onError={error => {
@@ -128,13 +128,15 @@ function DocumentList({ documents }) {
                     />
                   </span>
                 ) : (
-                  <RenderIconLink
-                    document={document}
-                    iconStyle={styles.openIcon}
-                    iconClass="fa-2x"
-                    icon="folder-open"
-                    iconTitleTip="Open Document"
-                  />
+                  <span className="float-right">
+                    <RenderIconLink
+                      document={document}
+                      iconStyle={styles.openIcon}
+                      iconClass="fa-2x"
+                      icon="folder-open"
+                      iconTitleTip="Open Document"
+                    />
+                  </span>
                 )}
               </div>
             </div>
