@@ -87,7 +87,7 @@ function CreateDocumentPage({ history }) {
               });
             }}
           >
-            Save Document
+            SAVE DOCUMENT
           </button>
         )}
       </Mutation>

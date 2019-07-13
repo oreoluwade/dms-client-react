@@ -100,8 +100,8 @@ export const GET_ONE_DOCUMENT = gql`
 `;
 
 export const UPDATE_DOCUMENT = gql`
-  mutation UPDATE_DOCUMENT($id: ID!) {
-    updateDocument(id: $id) {
+  mutation UPDATE_DOCUMENT($id: ID!, $title: String, $content: String) {
+    updateDocument(id: $id, title: $title, content: $content) {
       id
       title
       createdAt

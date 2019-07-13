@@ -1,10 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
+import { Mutation } from 'react-apollo';
 import { useQuery } from 'react-apollo-hooks';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { GET_ONE_DOCUMENT } from '../queries';
+import {
+  GET_ONE_DOCUMENT,
+  UPDATE_DOCUMENT,
+  GET_MY_DOCUMENTS
+} from '../queries';
 import { UserContext } from '../contexts';
 
 const styles = {
@@ -19,7 +24,7 @@ const styles = {
   }
 };
 
-function RenderDocument({ match }) {
+function RenderDocument({ match, history }) {
   const { user } = useContext(UserContext);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
@@ -80,13 +85,48 @@ function RenderDocument({ match }) {
           }}
           disabled={!isDocumentOwner}
         />
+        <Mutation
+          mutation={UPDATE_DOCUMENT}
+          onCompleted={() => {
+            history.push('/documents');
+          }}
+          refetchQueries={() => [
+            {
+              query: GET_MY_DOCUMENTS
+            }
+          ]}
+          onError={error => {
+            console.log('error', error);
+          }}
+        >
+          {mutate => (
+            <button
+              type="button"
+              className="btn btn-primary btn-lg mt-3 ml-auto mr-3"
+              style={styles.submitButton}
+              onClick={async event => {
+                event.preventDefault();
+                await mutate({
+                  variables: {
+                    title,
+                    content,
+                    id: match.params.documentId
+                  }
+                });
+              }}
+            >
+              UPDATE
+            </button>
+          )}
+        </Mutation>
       </div>
     );
   }
 }
 
 RenderDocument.propTypes = {
-  match: PropTypes.object
+  match: PropTypes.object,
+  history: PropTypes.object
 };
 
 export default withRouter(RenderDocument);
