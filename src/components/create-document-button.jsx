@@ -29,7 +29,7 @@ function CreateDocumentButton({ location }) {
         className="fa-2x"
         style={styles.iconStyle}
         data-toggle="tooltip"
-        title="CREATE HABIT"
+        title="CREATE NEW DOCUMENT"
       />
     </Link>
   ) : null;

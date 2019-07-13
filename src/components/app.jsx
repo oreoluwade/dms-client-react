@@ -12,7 +12,7 @@ import Profile from './profile';
 import Statistics from './statistics';
 import CreateDocumentButton from './create-document-button';
 import CreateDocumentPage from './create-document-page';
-import RenderDocument from './render-document';
+import UpdateDocumentPage from './update-document-page';
 
 const styles = {
   app: {
@@ -43,7 +43,7 @@ const App = () => {
               <ProtectedRoute
                 path="/document/:documentId"
                 exact
-                component={RenderDocument}
+                component={UpdateDocumentPage}
               />
               <Route component={NotFound} />
             </Switch>

@@ -13,7 +13,6 @@ const filterDocuments = (docs, type, user) => {
       filtered = docs.filter(
         doc => doc.access === type && user.id === doc.owner.id
       );
-      console.log(filtered);
       break;
 
     case 'ROLE':
