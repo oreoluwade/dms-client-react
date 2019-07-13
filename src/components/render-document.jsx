@@ -9,7 +9,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import {
   GET_ONE_DOCUMENT,
   UPDATE_DOCUMENT,
-  GET_MY_DOCUMENTS
+  GET_ALL_DOCUMENTS
 } from '../queries';
 import { UserContext } from '../contexts';
 
@@ -75,6 +75,7 @@ function RenderDocument({ match, history }) {
               aria-describedby="document title"
               value={title}
               onChange={handleTitleChange}
+              disabled={!isDocumentOwner}
             />
           </div>
           <div className="col">
@@ -83,6 +84,7 @@ function RenderDocument({ match, history }) {
               id="inputGroupSelect"
               value={access}
               onChange={handleAccessChange}
+              disabled={!isDocumentOwner}
             >
               <option defaultValue>Select Document Access Level</option>
               <option value="PUBLIC">PUBLIC</option>
@@ -119,7 +121,7 @@ function RenderDocument({ match, history }) {
           }}
           refetchQueries={() => [
             {
-              query: GET_MY_DOCUMENTS
+              query: GET_ALL_DOCUMENTS
             }
           ]}
           onError={error => {

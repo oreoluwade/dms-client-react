@@ -2,7 +2,7 @@ import React, { useReducer, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useQuery } from 'react-apollo-hooks';
 import UserContext from './user-context';
-import { GET_USER_DETAILS, GET_MY_DOCUMENTS, GET_ALL_USERS } from '../queries';
+import { GET_USER_DETAILS, GET_ALL_USERS, GET_ALL_DOCUMENTS } from '../queries';
 import { transformToken, getFromStorage } from '../util';
 
 const reducer = (staleState, newState) => {
@@ -15,13 +15,13 @@ const UserProvider = ({ children }) => {
     initialAuthStatus && transformToken(getFromStorage('dms-apolap-token'));
 
   const [
-    { user, isAuthenticated, myDocuments, allUsers },
+    { user, isAuthenticated, allDocuments, allUsers },
     setState
   ] = useReducer(reducer, {
     user: null,
     isAuthenticated: initialAuthStatus,
-    myDocuments: [],
-    allUsers: []
+    allUsers: [],
+    allDocuments: []
   });
 
   const { data: userDetails } = useQuery(GET_USER_DETAILS, {
@@ -29,7 +29,7 @@ const UserProvider = ({ children }) => {
     skip: !isAuthenticated
   });
 
-  const { data: myDocumentsData } = useQuery(GET_MY_DOCUMENTS, {
+  const { data: allDocumentsData } = useQuery(GET_ALL_DOCUMENTS, {
     skip: !user
   });
 
@@ -44,10 +44,10 @@ const UserProvider = ({ children }) => {
   }, [userDetails]);
 
   useEffect(() => {
-    if (myDocumentsData && myDocumentsData.getMyDocuments) {
-      setState({ myDocuments: myDocumentsData.getMyDocuments });
+    if (allDocumentsData && allDocumentsData.getAllDocuments) {
+      setState({ allDocuments: allDocumentsData.getAllDocuments });
     }
-  }, [myDocumentsData]);
+  }, [allDocumentsData]);
 
   useEffect(() => {
     if (allUsersData && allUsersData.getAllUsers) {
@@ -66,7 +66,7 @@ const UserProvider = ({ children }) => {
       value={{
         user,
         isAuthenticated,
-        myDocuments,
+        allDocuments,
         allUsers,
         handleAuthStatusChange
       }}

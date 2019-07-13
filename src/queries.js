@@ -42,9 +42,9 @@ export const GET_USER_DETAILS = gql`
   }
 `;
 
-export const GET_MY_DOCUMENTS = gql`
+export const GET_ALL_DOCUMENTS = gql`
   query {
-    getMyDocuments {
+    getAllDocuments {
       id
       title
       createdAt
@@ -53,6 +53,7 @@ export const GET_MY_DOCUMENTS = gql`
       access
       owner {
         id
+        role
       }
     }
   }

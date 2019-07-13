@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { withRouter } from 'react-router-dom';
 import { Mutation } from 'react-apollo';
+import Swal from 'sweetalert2';
 import PropTypes from 'prop-types';
 import { REGISTER } from '../../queries';
 import { addToStorage } from '../../util';
@@ -34,19 +35,27 @@ function Signup({ history }) {
     <Mutation
       mutation={REGISTER}
       onCompleted={data => {
-        addToStorage({ token: data.login.token });
+        addToStorage({ token: data.registerUser.token });
+        Swal.fire({
+          position: 'top-end',
+          type: 'success',
+          title: 'Signup successful',
+          showConfirmButton: false,
+          timer: 1500,
+          toast: true
+        });
         history.push('/documents');
       }}
-      onError={e => {
-        console.log('ERROR', e);
+      onError={error => {
+        console.log('ERROR', error.message);
       }}
     >
-      {registerUser => (
+      {mutate => (
         <form
           method="post"
           onSubmit={async e => {
             e.preventDefault();
-            await registerUser({
+            await mutate({
               variables: values
             });
           }}

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { Mutation } from 'react-apollo';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import { CREATE_DOCUMENT, GET_MY_DOCUMENTS } from '../queries';
+import { CREATE_DOCUMENT, GET_ALL_DOCUMENTS } from '../queries';
 
 const styles = {
   editorContainer: {
@@ -95,7 +95,7 @@ function CreateDocumentPage({ history }) {
         }}
         refetchQueries={() => [
           {
-            query: GET_MY_DOCUMENTS
+            query: GET_ALL_DOCUMENTS
           }
         ]}
         onError={error => {
