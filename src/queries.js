@@ -82,3 +82,19 @@ export const CREATE_DOCUMENT = gql`
     }
   }
 `;
+
+export const GET_ONE_DOCUMENT = gql`
+  query GET_ONE_DOCUMENT($id: ID!) {
+    getDocument(id: $id) {
+      id
+      title
+      createdAt
+      updatedAt
+      content
+      access
+      owner {
+        id
+      }
+    }
+  }
+`;
