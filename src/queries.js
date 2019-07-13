@@ -74,11 +74,21 @@ export const GET_ALL_USERS = gql`
 `;
 
 export const CREATE_DOCUMENT = gql`
-  mutation CREATE_DOCUMENT($title: String!, $content: String!) {
-    createDocument(title: $title, content: $content) {
+  mutation CREATE_DOCUMENT(
+    $title: String!
+    $content: String!
+    $access: String
+  ) {
+    createDocument(title: $title, content: $content, access: $access) {
       title
       content
+      access
       id
+      createdAt
+      updatedAt
+      owner {
+        id
+      }
     }
   }
 `;
@@ -100,8 +110,13 @@ export const GET_ONE_DOCUMENT = gql`
 `;
 
 export const UPDATE_DOCUMENT = gql`
-  mutation UPDATE_DOCUMENT($id: ID!, $title: String, $content: String) {
-    updateDocument(id: $id, title: $title, content: $content) {
+  mutation UPDATE_DOCUMENT(
+    $id: ID!
+    $title: String
+    $content: String
+    $access: String
+  ) {
+    updateDocument(id: $id, title: $title, content: $content, access: $access) {
       id
       title
       createdAt

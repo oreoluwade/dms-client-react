@@ -19,9 +19,6 @@ const styles = {
   },
   submitButton: {
     width: '10vw'
-  },
-  inputWrapper: {
-    height: '2vw'
   }
 };
 
@@ -29,6 +26,7 @@ function RenderDocument({ match, history }) {
   const { user } = useContext(UserContext);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
+  const [access, setAccess] = useState('');
   const [isDocumentOwner, setIsDocumentOwner] = useState(false);
 
   const { data, loading, error } = useQuery(GET_ONE_DOCUMENT, {
@@ -42,6 +40,7 @@ function RenderDocument({ match, history }) {
     if (user && data && data.getDocument) {
       setTitle(data.getDocument.title);
       setContent(data.getDocument.content);
+      setAccess(data.getDocument.access);
       setIsDocumentOwner(data.getDocument.owner.id === user.id);
     }
   }, [user, data]);
@@ -49,6 +48,11 @@ function RenderDocument({ match, history }) {
   const handleTitleChange = e => {
     e.preventDefault();
     setTitle(e.target.value);
+  };
+
+  const handleAccessChange = e => {
+    e.preventDefault();
+    setAccess(e.target.value);
   };
 
   if (error) {
@@ -61,17 +65,31 @@ function RenderDocument({ match, history }) {
         className="d-flex flex-column mr-auto ml-auto mt-5 w-75 bg-light"
         style={styles.editorContainer}
       >
-        <div className="d-flex align-items-center" style={styles.inputWrapper}>
-          <p className="mb-0 mr-3 ml-3 font-weight-bold">TITLE: </p>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Document Title..."
-            aria-label="Title"
-            aria-describedby="document title"
-            value={title}
-            onChange={handleTitleChange}
-          />
+        <div className="row pl-0 pr-0">
+          <div className="col-9 pr-0">
+            <input
+              type="text"
+              className="form-control"
+              placeholder="Document Title..."
+              aria-label="Title"
+              aria-describedby="document title"
+              value={title}
+              onChange={handleTitleChange}
+            />
+          </div>
+          <div className="col">
+            <select
+              className="custom-select col"
+              id="inputGroupSelect"
+              value={access}
+              onChange={handleAccessChange}
+            >
+              <option defaultValue>Select Document Access Level</option>
+              <option value="PUBLIC">PUBLIC</option>
+              <option value="PRIVATE">PRIVATE</option>
+              <option value="ROLE">ROLE</option>
+            </select>
+          </div>
         </div>
         <CKEditor
           editor={ClassicEditor}
@@ -105,7 +123,7 @@ function RenderDocument({ match, history }) {
             }
           ]}
           onError={error => {
-            console.log('error', error);
+            console.log('error', error.message);
           }}
         >
           {mutate => (
@@ -119,7 +137,8 @@ function RenderDocument({ match, history }) {
                   variables: {
                     title,
                     content,
-                    id: match.params.documentId
+                    id: match.params.documentId,
+                    access
                   }
                 });
               }}
