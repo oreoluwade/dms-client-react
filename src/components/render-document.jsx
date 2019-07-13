@@ -123,7 +123,7 @@ function RenderDocument({ match, history }) {
             }
           ]}
           onError={error => {
-            console.log('error', error);
+            console.log('error', error.message);
           }}
         >
           {mutate => (
