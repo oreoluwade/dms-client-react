@@ -1,9 +1,11 @@
 import React, { useContext } from 'react';
 import PropTypes from 'prop-types';
+import { Mutation } from 'react-apollo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { stripHtmlTags } from '../util';
 import { UserContext } from '../contexts';
 import RenderIconLink from './render-icon-link';
+import { DELETE_DOCUMENT, GET_MY_DOCUMENTS } from '../queries';
 
 const styles = {
   openDocLink: {
@@ -45,13 +47,37 @@ function DocumentList({ documents }) {
                 </p>
                 {isDocOwner ? (
                   <span className="d-flex float-right">
-                    <FontAwesomeIcon
-                      icon="trash-alt"
-                      className="fa-2x"
-                      style={styles.deleteIcon}
-                      data-toggle="tooltip"
-                      title="Delete Document"
-                    />
+                    <Mutation
+                      mutation={DELETE_DOCUMENT}
+                      onCompleted={data => {
+                        console.log('delete data', data);
+                      }}
+                      refetchQueries={() => [
+                        {
+                          query: GET_MY_DOCUMENTS
+                        }
+                      ]}
+                      onError={error => {
+                        console.log('delete error', error.message);
+                      }}
+                    >
+                      {mutate => (
+                        <FontAwesomeIcon
+                          icon="trash-alt"
+                          className="fa-2x"
+                          style={styles.deleteIcon}
+                          data-toggle="tooltip"
+                          title="Delete Document"
+                          onClick={async () => {
+                            await mutate({
+                              variables: {
+                                id: document.id
+                              }
+                            });
+                          }}
+                        />
+                      )}
+                    </Mutation>
                     <RenderIconLink
                       document={document}
                       iconStyle={styles.editIcon}

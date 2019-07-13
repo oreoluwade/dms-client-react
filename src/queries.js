@@ -98,3 +98,27 @@ export const GET_ONE_DOCUMENT = gql`
     }
   }
 `;
+
+export const UPDATE_DOCUMENT = gql`
+  mutation UPDATE_DOCUMENT($id: ID!) {
+    updateDocument(id: $id) {
+      id
+      title
+      createdAt
+      updatedAt
+      content
+      access
+      owner {
+        id
+      }
+    }
+  }
+`;
+
+export const DELETE_DOCUMENT = gql`
+  mutation DELETE_DOCUMENT($id: ID!) {
+    deleteDocument(id: $id) {
+      message
+    }
+  }
+`;
