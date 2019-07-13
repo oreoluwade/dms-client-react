@@ -106,49 +106,55 @@ function RenderDocument({ match, history }) {
           }}
           disabled={!isDocumentOwner}
         />
-        <Mutation
-          mutation={UPDATE_DOCUMENT}
-          onCompleted={() => {
-            Swal.fire({
-              position: 'top-end',
-              type: 'success',
-              title: 'Document updated!',
-              showConfirmButton: false,
-              timer: 1500,
-              toast: true
-            });
-            history.push('/documents');
-          }}
-          refetchQueries={() => [
-            {
-              query: GET_ALL_DOCUMENTS
-            }
-          ]}
-          onError={error => {
-            console.log('error', error.message);
-          }}
-        >
-          {mutate => (
-            <button
-              type="button"
-              className="btn btn-primary btn-lg mt-3 ml-auto mr-3"
-              style={styles.submitButton}
-              onClick={async event => {
-                event.preventDefault();
-                await mutate({
-                  variables: {
-                    title,
-                    content,
-                    id: match.params.documentId,
-                    access
-                  }
-                });
-              }}
-            >
-              UPDATE
-            </button>
-          )}
-        </Mutation>
+        {isDocumentOwner ? (
+          <Mutation
+            mutation={UPDATE_DOCUMENT}
+            onCompleted={() => {
+              Swal.fire({
+                position: 'top-end',
+                type: 'success',
+                title: 'Document updated!',
+                showConfirmButton: false,
+                timer: 1500,
+                toast: true
+              });
+              history.push('/documents');
+            }}
+            refetchQueries={() => [
+              {
+                query: GET_ALL_DOCUMENTS
+              }
+            ]}
+            onError={error => {
+              console.log('error', error.message);
+            }}
+          >
+            {mutate => (
+              <button
+                type="button"
+                className="btn btn-primary btn-lg mt-3 ml-auto mr-3"
+                style={styles.submitButton}
+                onClick={async event => {
+                  event.preventDefault();
+                  await mutate({
+                    variables: {
+                      title,
+                      content,
+                      id: match.params.documentId,
+                      access
+                    }
+                  });
+                }}
+              >
+                UPDATE
+              </button>
+            )}
+          </Mutation>
+        ) : (
+          <span className="mr-3 ml-auto font-italic text-info">
+            This document is Read only
+          </span>
+        )}
       </div>
     );
   }
