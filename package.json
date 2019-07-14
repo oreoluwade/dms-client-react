@@ -7,9 +7,8 @@
     "node": "12.0.0"
   },
   "scripts": {
-    "build": "webpack --mode production",
     "start": "node server.js",
-    "heroku-postbuild": "webpack",
+    "heroku-postbuild": "webpack --mode production",
     "dev": "webpack-dev-server --progress --colors --config ./webpack.config.js --open --mode development",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

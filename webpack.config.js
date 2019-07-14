@@ -6,7 +6,6 @@ const path = require('path');
 
 module.exports = () => {
   const env = dotenv.config().parsed;
-  console.log('glassboom', env);
 
   const envKeys = Object.keys(env).reduce((prev, next) => {
     prev[`process.env.${next}`] = JSON.stringify(env[next]);
@@ -15,7 +14,7 @@ module.exports = () => {
 
   return {
     entry: './public/src/index.js',
-    devtool: env['NODE_ENV'] === 'development' ? 'eval' : 'source-map',
+    devtool: process.env.NODE_ENV === 'development' ? 'eval' : 'source-map',
     target: 'web',
     output: {
       path: path.resolve(__dirname, 'dist'),
