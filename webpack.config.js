@@ -1,10 +1,12 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 const dotenv = require('dotenv');
 const path = require('path');
 
 module.exports = () => {
   const env = dotenv.config().parsed;
+  console.log('glassboom', env);
 
   const envKeys = Object.keys(env).reduce((prev, next) => {
     prev[`process.env.${next}`] = JSON.stringify(env[next]);
@@ -12,8 +14,8 @@ module.exports = () => {
   }, {});
 
   return {
-    entry: './src/index.js',
-    devtool: 'source-map',
+    entry: './public/src/index.js',
+    devtool: env['NODE_ENV'] === 'development' ? 'eval' : 'source-map',
     target: 'web',
     output: {
       path: path.resolve(__dirname, 'dist'),
@@ -56,8 +58,13 @@ module.exports = () => {
       extensions: ['.mjs', '.js', '.jsx']
     },
     plugins: [
+      new CleanWebpackPlugin(path.resolve(__dirname, 'dist'), {
+        verbose: true,
+        dry: false,
+        allowExternal: true
+      }),
       new webpack.HotModuleReplacementPlugin(),
-      new HtmlWebpackPlugin({ template: './src/index.html' }),
+      new HtmlWebpackPlugin({ template: './public/index.html' }),
       new webpack.DefinePlugin(envKeys)
     ],
     devServer: {
