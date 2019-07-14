@@ -8,8 +8,8 @@
   },
   "scripts": {
     "start": "node server.js",
-    "heroku-postbuild": "webpack --mode production",
-    "dev": "webpack-dev-server --progress --colors --config ./webpack.config.js --open --mode development",
+    "heroku-postbuild": "webpack --config ./webpack.prod.js",
+    "dev": "webpack-dev-server --progress --colors --config ./webpack.dev.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -57,7 +57,8 @@
     "sweetalert2": "^8.13.4",
     "url-loader": "^2.0.1",
     "webpack": "^4.35.2",
-    "webpack-cli": "^3.3.5"
+    "webpack-cli": "^3.3.5",
+    "webpack-merge": "^4.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
