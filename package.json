@@ -7,9 +7,9 @@
     "node": "12.0.0"
   },
   "scripts": {
-    "build": "webpack --mode production",
-    "start": "webpack-dev-server --progress --colors --config ./webpack.config.js --mode production",
-    "dev": "webpack-dev-server --progress --colors --config ./webpack.config.js --open --mode development",
+    "start": "node server.js",
+    "heroku-postbuild": "webpack --config ./webpack.prod.js",
+    "dev": "webpack-dev-server --progress --colors --config ./webpack.dev.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -37,8 +37,11 @@
     "@fortawesome/react-fontawesome": "^0.1.4",
     "apollo-boost": "^0.4.3",
     "bootstrap": "^4.3.1",
+    "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.0.0",
     "date-fns": "^1.30.1",
+    "express": "^4.17.1",
+    "express-favicon": "^2.0.1",
     "file-loader": "^4.0.0",
     "graphql": "^14.4.1",
     "graphql-tag": "^2.10.1",
@@ -54,7 +57,8 @@
     "sweetalert2": "^8.13.4",
     "url-loader": "^2.0.1",
     "webpack": "^4.35.2",
-    "webpack-cli": "^3.3.5"
+    "webpack-cli": "^3.3.5",
+    "webpack-merge": "^4.2.1"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
