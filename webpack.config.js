@@ -5,12 +5,15 @@ const dotenv = require('dotenv');
 const path = require('path');
 
 module.exports = () => {
-  const env = dotenv.config().parsed;
+  let envKeys;
+  if (process.env.NODE_ENV === 'development') {
+    const env = dotenv.config().parsed;
 
-  const envKeys = Object.keys(env).reduce((prev, next) => {
-    prev[`process.env.${next}`] = JSON.stringify(env[next]);
-    return prev;
-  }, {});
+    envKeys = Object.keys(env).reduce((prev, next) => {
+      prev[`process.env.${next}`] = JSON.stringify(env[next]);
+      return prev;
+    }, {});
+  }
 
   return {
     entry: './public/src/index.js',
@@ -64,7 +67,8 @@ module.exports = () => {
       }),
       new webpack.HotModuleReplacementPlugin(),
       new HtmlWebpackPlugin({ template: './public/index.html' }),
-      new webpack.DefinePlugin(envKeys)
+      process.env.NODE_ENV === 'development' &&
+        new webpack.DefinePlugin(envKeys)
     ],
     devServer: {
       contentBase: './dist',
