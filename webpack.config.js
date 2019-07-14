@@ -60,11 +60,12 @@ module.exports = () => {
       extensions: ['.mjs', '.js', '.jsx']
     },
     plugins: [
-      new CleanWebpackPlugin(path.resolve(__dirname, 'dist'), {
-        verbose: true,
-        dry: false,
-        allowExternal: true
-      }),
+      process.env.NODE_ENV === 'development' &&
+        new CleanWebpackPlugin(path.resolve(__dirname, 'dist'), {
+          verbose: true,
+          dry: false,
+          allowExternal: true
+        }),
       new webpack.HotModuleReplacementPlugin(),
       new HtmlWebpackPlugin({ template: './public/index.html' }),
       process.env.NODE_ENV === 'development' &&
