@@ -4,17 +4,22 @@ import Swal from 'sweetalert2';
 import CustomInput from './custom-input';
 import { UserContext } from '../contexts';
 import { UPDATE_PROFILE, GET_USER_DETAILS } from '../queries';
+import ProfilePicture from './profile-picture';
 
 const styles = {
   wrapper: {
-    height: '70vh',
+    maxHeight: '70vh',
+    minHeight: '37vh',
+    marginTop: '10rem',
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center'
+    alignItems: 'center',
+    borderRadius: '5rem'
   },
   input: {
     borderColor: 'black',
-    height: '3.5rem'
+    height: '3.5rem',
+    fontSize: '2rem'
   }
 };
 
@@ -42,9 +47,9 @@ function Profile() {
   };
 
   return (
-    <div className="container bg-light mt-5" style={styles.wrapper}>
+    <div className="d-flex container bg-light" style={styles.wrapper}>
       {user && values && (
-        <div className="row mt-5 w-75">
+        <div className="row mt-5 w-100">
           <div className="col-sm-6 d-flex flex-column align-items-center">
             <CustomInput
               className="mt-4"
@@ -92,9 +97,7 @@ function Profile() {
               onChange={handleInputChange}
             />
           </div>
-          <div className="col-sm-6 d-flex justify-content-center">
-            <h1>Avatar</h1>
-          </div>
+          <ProfilePicture />
         </div>
       )}
       <Mutation
