@@ -9,13 +9,14 @@ import { GET_ALL_DOCUMENTS } from '../queries';
 
 const styles = {
   editorContainer: {
-    height: '70vh'
+    minHeight: '70vh'
   },
   submitButton: {
     width: '10vw'
   },
   titleField: {
-    height: '6vh'
+    height: '3rem',
+    fontSize: '1.5rem'
   }
 };
 
@@ -42,7 +43,7 @@ function RenderDocument({
       className="container d-flex flex-column mr-auto ml-auto mt-5 bg-light"
       style={styles.editorContainer}
     >
-      <div className="row pl-0 pr-0">
+      <div className="row pl-0 pr-0 mt-3 mb-2">
         <div className="col-9 pr-0">
           <input
             type="text"
@@ -108,7 +109,7 @@ function RenderDocument({
             console.log('error', error.message);
           }}
         >
-          {mutate => (
+          {(mutate, { loading }) => (
             <button
               type="button"
               className="btn btn-primary btn-lg mt-3 ml-auto mr-0"
@@ -117,6 +118,7 @@ function RenderDocument({
                 event.preventDefault();
                 await mutate({ variables });
               }}
+              disabled={loading}
             >
               {mutationType}
             </button>

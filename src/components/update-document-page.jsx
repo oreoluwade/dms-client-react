@@ -5,6 +5,7 @@ import { useQuery } from 'react-apollo-hooks';
 import { GET_ONE_DOCUMENT, UPDATE_DOCUMENT } from '../queries';
 import { UserContext } from '../contexts';
 import RenderDocument from './render-document';
+import Loader from './loader';
 
 function UpdateDocument({ match }) {
   const { user } = useContext(UserContext);
@@ -43,7 +44,8 @@ function UpdateDocument({ match }) {
     return <h1>The document could not be retrieved!</h1>;
   } else {
     return loading ? (
-      <h1>Loading...</h1>
+      // <h1>Loading...</h1>
+      <Loader />
     ) : (
       <RenderDocument
         alertTitle="Document Updated!"

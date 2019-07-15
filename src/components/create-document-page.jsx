@@ -43,7 +43,7 @@ function CreateDocumentPage() {
         content,
         access
       }}
-      mutationType="SAVE DOCUMENT"
+      mutationType="SAVE"
     />
   );
 }

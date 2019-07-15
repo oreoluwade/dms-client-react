@@ -1,13 +1,14 @@
 import React, { useContext } from 'react';
 import { UserContext } from '../contexts';
 import { standardizeDate } from '../util';
+import Loader from './loader';
 
 function ManageUsers() {
   const { allUsers } = useContext(UserContext);
 
   return (
     <div className="row mt-5 justify-content-center">
-      {allUsers &&
+      {allUsers ? (
         allUsers.map(user => (
           <div className="col-sm-8 mb-2" key={user.id}>
             <div className="card">
@@ -26,7 +27,10 @@ function ManageUsers() {
               </div>
             </div>
           </div>
-        ))}
+        ))
+      ) : (
+        <Loader />
+      )}
     </div>
   );
 }
