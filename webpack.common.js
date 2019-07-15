@@ -5,12 +5,7 @@ const path = require('path');
 const dotenv = require('dotenv');
 const webpack = require('webpack');
 
-const env = dotenv.config().parsed;
-
-const envKeys = Object.keys(env).reduce((prev, next) => {
-  prev[`process.env.${next}`] = JSON.stringify(env[next]);
-  return prev;
-}, {});
+dotenv.config();
 
 module.exports = {
   entry: './src/index.js',
@@ -65,7 +60,13 @@ module.exports = {
       dry: false,
       dangerouslyAllowCleanPatternsOutsideProject: true
     }),
-    new webpack.DefinePlugin(envKeys),
+    new webpack.DefinePlugin({
+      'process.env.API_URL': JSON.stringify(process.env.API_URL),
+      'process.env.JWT_SECRET': JSON.stringify(process.env.JWT_SECRET),
+      'process.env.CLOUDNAME': JSON.stringify(process.env.CLOUDNAME),
+      'process.env.UPLOAD_PRESET': JSON.stringify(process.env.UPLOAD_PRESET),
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+    }),
     new CompressionPlugin()
   ]
 };
