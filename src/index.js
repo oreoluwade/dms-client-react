@@ -10,12 +10,14 @@ import {
   faPencilAlt,
   faFolderOpen,
   faEdit,
-  faTrashAlt
+  faTrashAlt,
+  faUpload,
+  faImage
 } from '@fortawesome/free-solid-svg-icons';
 import App from './components/app';
 import client from './apollo-client';
 
-library.add(faPencilAlt, faFolderOpen, faEdit, faTrashAlt);
+library.add(faPencilAlt, faFolderOpen, faEdit, faTrashAlt, faUpload, faImage);
 
 render(
   <ApolloProvider client={client}>
