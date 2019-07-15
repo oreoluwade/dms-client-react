@@ -1,6 +1,7 @@
 import React, { useContext, Fragment } from 'react';
 import { UserContext } from '../contexts';
 import DocumentList from './document-list';
+import Loader from './loader';
 
 const filterDocuments = (docs, type, user) => {
   let filtered;
@@ -33,7 +34,7 @@ function DocumentsPage() {
 
   return (
     <Fragment>
-      {user && allDocuments && (
+      {user && allDocuments ? (
         <Fragment>
           <ul
             className="nav nav-tabs justify-content-center"
@@ -113,6 +114,8 @@ function DocumentsPage() {
             </div>
           </div>
         </Fragment>
+      ) : (
+        <Loader />
       )}
     </Fragment>
   );

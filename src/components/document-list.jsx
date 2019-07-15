@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import Swal from 'sweetalert2';
 import { Mutation } from 'react-apollo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { stripHtmlTags, standardizeDate } from '../util';
+import { standardizeDate } from '../util';
 import { UserContext } from '../contexts';
 import RenderIconLink from './render-icon-link';
 import { DELETE_DOCUMENT, GET_ALL_DOCUMENTS } from '../queries';
+import renderContentPart from '../util/render-content-part';
 
 const swalWithBootstrapButtons = Swal.mixin({
   customClass: {
@@ -29,13 +30,6 @@ const styles = {
   editIcon: {
     color: 'green'
   }
-};
-
-const renderContentPart = content => {
-  const normalizedText = stripHtmlTags(content);
-  return normalizedText && normalizedText.length > 50
-    ? `${normalizedText.slice(0, 60)}...`
-    : normalizedText;
 };
 
 function DocumentList({ documents }) {

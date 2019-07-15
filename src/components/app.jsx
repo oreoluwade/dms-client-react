@@ -1,5 +1,6 @@
 import React, { Fragment, Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Loader from './loader';
 const Header = lazy(() => import(/* webpackChunkName: "header" */ './header'));
 const HomePage = lazy(() =>
   import(/* webpackChunkName: "homepage" */ './homepage')
@@ -52,7 +53,7 @@ const styles = {
 const App = () => {
   return (
     <div className="container-fluid text-monospace" style={styles.app}>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<Loader />}>
         <UserProvider>
           <Router>
             <Fragment>

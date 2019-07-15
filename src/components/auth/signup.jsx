@@ -50,7 +50,7 @@ function Signup({ history }) {
         console.log('ERROR', error.message);
       }}
     >
-      {mutate => (
+      {(mutate, { loading }) => (
         <form
           method="post"
           onSubmit={async e => {
@@ -121,7 +121,11 @@ function Signup({ history }) {
               onChange={handleInputChange}
             />
           </div>
-          <button type="submit" className="btn btn-primary btn-lg w-100">
+          <button
+            type="submit"
+            className="btn btn-primary btn-lg w-100"
+            disabled={loading}
+          >
             Submit
           </button>
         </form>

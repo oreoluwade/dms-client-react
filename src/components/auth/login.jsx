@@ -45,7 +45,7 @@ function Login({ history }) {
         console.log('ERROR', error.message);
       }}
     >
-      {mutate => (
+      {(mutate, { loading }) => (
         <form
           onSubmit={async e => {
             e.preventDefault();
@@ -88,7 +88,11 @@ function Login({ history }) {
             />
           </div>
           <hr />
-          <button type="submit" className="btn btn-primary btn-lg w-100">
+          <button
+            type="submit"
+            className="btn btn-primary btn-lg w-100"
+            disabled={loading}
+          >
             Submit
           </button>
         </form>

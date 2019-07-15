@@ -1,10 +1,11 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, Fragment } from 'react';
 import { Mutation } from 'react-apollo';
 import Swal from 'sweetalert2';
 import CustomInput from './custom-input';
 import { UserContext } from '../contexts';
 import { UPDATE_PROFILE, GET_USER_DETAILS } from '../queries';
 import ProfilePicture from './profile-picture';
+import Loader from './loader';
 
 const styles = {
   wrapper: {
@@ -18,8 +19,8 @@ const styles = {
   },
   input: {
     borderColor: 'black',
-    height: '3.5rem',
-    fontSize: '2rem'
+    height: '3rem',
+    fontSize: '1.5rem'
   }
 };
 
@@ -46,9 +47,9 @@ function Profile() {
     }));
   };
 
-  return (
+  return user && values ? (
     <div className="d-flex container bg-light" style={styles.wrapper}>
-      {user && values && (
+      <Fragment>
         <div className="row mt-5 w-100">
           <div className="col-sm-6 d-flex flex-column align-items-center">
             <CustomInput
@@ -99,54 +100,56 @@ function Profile() {
           </div>
           <ProfilePicture />
         </div>
-      )}
-      <Mutation
-        mutation={UPDATE_PROFILE}
-        onCompleted={() => {
-          Swal.fire({
-            position: 'top-end',
-            type: 'success',
-            title: 'Profile Update Successful!',
-            showConfirmButton: false,
-            timer: 1500,
-            toast: true
-          });
-          setEditMode(false);
-        }}
-        onError={error => {
-          console.log('error message', error.message);
-        }}
-        refetchQueries={() => [
-          {
-            query: GET_USER_DETAILS,
-            variables: {
-              id: user.id
+        <Mutation
+          mutation={UPDATE_PROFILE}
+          onCompleted={() => {
+            Swal.fire({
+              position: 'top-end',
+              type: 'success',
+              title: 'Profile Update Successful!',
+              showConfirmButton: false,
+              timer: 1500,
+              toast: true
+            });
+            setEditMode(false);
+          }}
+          onError={error => {
+            console.log('error message', error.message);
+          }}
+          refetchQueries={() => [
+            {
+              query: GET_USER_DETAILS,
+              variables: {
+                id: user.id
+              }
             }
-          }
-        ]}
-      >
-        {mutate => (
-          <button
-            type="button"
-            title={editMode ? 'Click to save' : 'Click to change details'}
-            className="btn btn-primary btn-lg mt-5 w-25"
-            onClick={
-              !editMode
-                ? startEditing
-                : async e => {
-                    e.preventDefault();
-                    mutate({
-                      variables: values,
-                      skip: !user || !user.id || !editMode
-                    });
-                  }
-            }
-          >
-            {editMode ? 'SAVE' : 'START EDITING'}
-          </button>
-        )}
-      </Mutation>
+          ]}
+        >
+          {mutate => (
+            <button
+              type="button"
+              title={editMode ? 'Click to save' : 'Click to change details'}
+              className="btn btn-primary btn-lg mt-5 w-25 mb-3"
+              onClick={
+                !editMode
+                  ? startEditing
+                  : async e => {
+                      e.preventDefault();
+                      mutate({
+                        variables: values,
+                        skip: !user || !user.id || !editMode
+                      });
+                    }
+              }
+            >
+              {editMode ? 'SAVE' : 'START EDITING'}
+            </button>
+          )}
+        </Mutation>
+      </Fragment>
     </div>
+  ) : (
+    <Loader />
   );
 }
 
