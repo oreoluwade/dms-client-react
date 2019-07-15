@@ -1,8 +1,6 @@
 const webpack = require('webpack');
 const dotenv = require('dotenv');
 const merge = require('webpack-merge');
-const WebpackBundleAnalyzer = require('webpack-bundle-analyzer')
-  .BundleAnalyzerPlugin;
 const path = require('path');
 const baseConfig = require('./webpack.common');
 
@@ -16,7 +14,7 @@ const envKeys = Object.keys(env).reduce((prev, next) => {
 module.exports = merge(baseConfig, {
   mode: 'development',
   devtool: 'eval',
-  plugins: [new webpack.DefinePlugin(envKeys), new WebpackBundleAnalyzer()],
+  plugins: [new webpack.DefinePlugin(envKeys)],
   devServer: {
     contentBase: path.join(__dirname, 'dist'),
     hot: true,
