@@ -2,6 +2,15 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const path = require('path');
+const dotenv = require('dotenv');
+const webpack = require('webpack');
+
+const env = dotenv.config().parsed;
+
+const envKeys = Object.keys(env).reduce((prev, next) => {
+  prev[`process.env.${next}`] = JSON.stringify(env[next]);
+  return prev;
+}, {});
 
 module.exports = {
   entry: './src/index.js',
@@ -16,7 +25,9 @@ module.exports = {
     rules: [
       {
         test: /\.jsx?$/,
-        use: 'babel-loader',
+        use: {
+          loader: 'babel-loader'
+        },
         exclude: /node_modules/
       },
       {
@@ -54,6 +65,7 @@ module.exports = {
       dry: false,
       dangerouslyAllowCleanPatternsOutsideProject: true
     }),
+    new webpack.DefinePlugin(envKeys),
     new CompressionPlugin()
   ]
 };
