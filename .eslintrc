@@ -1,23 +1,24 @@
 {
   "env": {
     "browser": true,
-      "es6": true,
-      "node": true
+    "es6": true,
+    "node": true
   },
   "extends": ["eslint:recommended", "plugin:react/recommended"],
   "plugins": ["react"],
   "globals": {
-      "Atomics": "readonly",
-      "SharedArrayBuffer": "readonly"
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
   },
+  "parser": "babel-eslint",
   "parserOptions": {
+    "sourceType": "module",
+    "allowImportExportEverywhere": true,
     "ecmaFeatures": {
       "experimentalObjectRestSpread": true,
       "jsx": true
     },
-      "ecmaVersion": 2018,
-      "sourceType": "module"
+    "ecmaVersion": 2018
   },
   "rules": {}
 }
-

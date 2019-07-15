@@ -1,5 +1,6 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 const path = require('path');
 
 module.exports = {
@@ -52,6 +53,7 @@ module.exports = {
       verbose: true,
       dry: false,
       dangerouslyAllowCleanPatternsOutsideProject: true
-    })
+    }),
+    new CompressionPlugin()
   ]
 };
