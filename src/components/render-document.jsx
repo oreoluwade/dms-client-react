@@ -112,7 +112,7 @@ function RenderDocument({
           {(mutate, { loading }) => (
             <button
               type="button"
-              className="btn btn-primary btn-lg mt-3 ml-auto mr-0"
+              className="btn btn-primary btn-lg mt-3 ml-auto mr-0 mb-3"
               style={styles.submitButton}
               onClick={async event => {
                 event.preventDefault();
