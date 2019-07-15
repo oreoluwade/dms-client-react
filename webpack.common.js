@@ -7,6 +7,8 @@ const webpack = require('webpack');
 
 const env = dotenv.config().parsed;
 
+console.log('OMORILEWA', env);
+
 const envKeys = Object.keys(env).reduce((prev, next) => {
   prev[`process.env.${next}`] = JSON.stringify(env[next]);
   return prev;
