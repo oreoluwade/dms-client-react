@@ -12,10 +12,7 @@ import {
   faEdit,
   faTrashAlt
 } from '@fortawesome/free-solid-svg-icons';
-// import App from './components/app';
-const App = lazy(() =>
-  import(/* webpackChunkName: "app" */ './components/app')
-);
+import App from './components/app';
 import client from './apollo-client';
 
 library.add(faPencilAlt, faFolderOpen, faEdit, faTrashAlt);

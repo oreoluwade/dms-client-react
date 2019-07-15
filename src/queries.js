@@ -23,20 +23,17 @@ export const LOGIN = gql`
 export const GET_USER_DETAILS = gql`
   query getUser($id: ID!) {
     getUser(id: $id) {
+      id
       username
       email
-      id
+      firstname
+      lastname
+      avatar
       role
       createdAt
       updatedAt
       documents {
-        title
-        content
-        access
-        owner {
-          username
-          firstname
-        }
+        id
       }
     }
   }
@@ -135,6 +132,36 @@ export const DELETE_DOCUMENT = gql`
   mutation DELETE_DOCUMENT($id: ID!) {
     deleteDocument(id: $id) {
       message
+    }
+  }
+`;
+
+export const UPDATE_PROFILE = gql`
+  mutation UPDATE_PROFILE(
+    $id: ID!
+    $username: String
+    $email: String
+    $password: String
+    $firstname: String
+    $lastname: String
+    $avatar: String
+  ) {
+    updateUser(
+      id: $id
+      username: $username
+      email: $email
+      password: $password
+      firstname: $firstname
+      lastname: $lastname
+      avatar: $avatar
+    ) {
+      id
+      email
+      username
+      firstname
+      lastname
+      avatar
+      updatedAt
     }
   }
 `;
