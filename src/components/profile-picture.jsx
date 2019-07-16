@@ -114,7 +114,7 @@ function ProfilePicture() {
               }
             ]}
             onError={error => {
-              console.log('data', error.message);
+              console.log('profile picture error', error.message);
             }}
           >
             {mutate => (
@@ -125,13 +125,19 @@ function ProfilePicture() {
                 data-toggle="tooltip"
                 title="Upload"
                 onClick={async () => {
-                  const avatar = await uploadImage({ fileData });
-                  mutate({
-                    variables: {
-                      id: user.id,
-                      avatar
-                    }
+                  const avatar = await uploadImage({
+                    fileData,
+                    tags: ['profile', 'picture', 'image'],
+                    publicId: `${user.username}-profile`
                   });
+                  if (avatar.startsWith('https')) {
+                    mutate({
+                      variables: {
+                        id: user.id,
+                        avatar
+                      }
+                    });
+                  }
                 }}
               />
             )}
