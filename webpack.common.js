@@ -65,7 +65,10 @@ module.exports = {
       'process.env.JWT_SECRET': JSON.stringify(process.env.JWT_SECRET),
       'process.env.CLOUDNAME': JSON.stringify(process.env.CLOUDNAME),
       'process.env.UPLOAD_PRESET': JSON.stringify(process.env.UPLOAD_PRESET),
-      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV)
+      'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV),
+      'process.env.SIGNED_PRESET': JSON.stringify(process.env.SIGNED_PRESET),
+      'process.env.CLOUD_KEY': JSON.stringify(process.env.CLOUD_KEY),
+      'process.env.CLOUD_SECRET': JSON.stringify(process.env.CLOUD_SECRET)
     }),
     new CompressionPlugin()
   ]

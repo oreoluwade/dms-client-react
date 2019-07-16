@@ -82,7 +82,7 @@ function Profile() {
               description="Firstname"
               name="firstname"
               style={styles.input}
-              value={values.firstname}
+              value={values.firstname || ''}
               disabled={!editMode}
               onChange={handleInputChange}
             />
@@ -93,7 +93,7 @@ function Profile() {
               name="lastname"
               description="Lastname"
               style={styles.input}
-              value={values.lastname}
+              value={values.lastname || ''}
               disabled={!editMode}
               onChange={handleInputChange}
             />
