@@ -121,7 +121,7 @@ function DocumentList({ documents }) {
                         document={document}
                         iconStyle={styles.editIcon}
                         iconClass="fa-2x ml-4"
-                        icon="edit"
+                        icon="eye"
                         iconTitleTip="Edit Document"
                       />
                     </span>
@@ -130,7 +130,7 @@ function DocumentList({ documents }) {
                       document={document}
                       iconStyle={styles.openIcon}
                       iconClass="fa-2x"
-                      icon="folder-open"
+                      icon="eye"
                       iconTitleTip="Open Document"
                     />
                   )}
