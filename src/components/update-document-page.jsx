@@ -6,12 +6,14 @@ import { GET_ONE_DOCUMENT, UPDATE_DOCUMENT } from '../queries';
 import { UserContext } from '../contexts';
 import RenderDocument from './render-document';
 import Loader from './loader';
+import { standardizeDate } from '../util';
 
 function UpdateDocument({ match }) {
   const { user } = useContext(UserContext);
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [access, setAccess] = useState('');
+  const [documentInfo, setDocumentInfo] = useState('');
   const [isDocumentOwner, setIsDocumentOwner] = useState(false);
 
   const { data, loading, error } = useQuery(GET_ONE_DOCUMENT, {
@@ -26,6 +28,11 @@ function UpdateDocument({ match }) {
       setTitle(data.getDocument.title);
       setContent(data.getDocument.content);
       setAccess(data.getDocument.access);
+      setDocumentInfo(
+        `${data.getDocument.owner.username} on ${standardizeDate(
+          data.getDocument.createdAt
+        )}`
+      );
       setIsDocumentOwner(data.getDocument.owner.id === user.id);
     }
   }, [user, data]);
@@ -44,7 +51,6 @@ function UpdateDocument({ match }) {
     return <h1>The document could not be retrieved!</h1>;
   } else {
     return loading ? (
-      // <h1>Loading...</h1>
       <Loader />
     ) : (
       <RenderDocument
@@ -67,6 +73,7 @@ function UpdateDocument({ match }) {
           access
         }}
         mutationType="UPDATE"
+        documentInfo={documentInfo}
       />
     );
   }

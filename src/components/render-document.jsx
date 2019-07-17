@@ -34,7 +34,8 @@ function RenderDocument({
   handleDocumentDataChange,
   mutationType,
   variables,
-  onCompletedCallback
+  onCompletedCallback,
+  documentInfo
 }) {
   const isCreateDocumentPage = location.pathname === '/create-document';
 
@@ -125,8 +126,11 @@ function RenderDocument({
           )}
         </Mutation>
       ) : (
-        <span className="mr-3 ml-auto font-italic text-info">
-          This document is Read only
+        <span className="mt-3 d-flex ">
+          <span className="font-italic text-info">
+            This document is Read only
+          </span>
+          <span className="font-italic ml-auto">Created by {documentInfo}</span>
         </span>
       )}
     </div>
@@ -147,7 +151,8 @@ RenderDocument.propTypes = {
   mutationType: PropTypes.string,
   variables: PropTypes.object,
   location: PropTypes.object,
-  onCompletedCallback: PropTypes.func
+  onCompletedCallback: PropTypes.func,
+  documentInfo: PropTypes.string
 };
 
 export default withRouter(RenderDocument);

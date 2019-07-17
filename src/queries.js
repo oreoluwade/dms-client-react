@@ -102,6 +102,7 @@ export const GET_ONE_DOCUMENT = gql`
       access
       owner {
         id
+        username
       }
     }
   }
