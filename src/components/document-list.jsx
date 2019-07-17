@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Swal from 'sweetalert2';
 import { Mutation } from 'react-apollo';
@@ -25,15 +26,20 @@ const styles = {
     color: 'black'
   },
   deleteIcon: {
-    color: 'red'
+    color: 'red',
+    cursor: 'pointer'
   },
   editIcon: {
     color: 'green'
   }
 };
 
-function DocumentList({ documents }) {
+function DocumentList({ documents, history }) {
   const { user } = useContext(UserContext);
+
+  const renderDocument = id => {
+    history.push(`/document/${id}`);
+  };
 
   return (
     <div className="row mt-5">
@@ -41,7 +47,13 @@ function DocumentList({ documents }) {
         const isDocOwner = user.id === document.owner.id;
 
         return (
-          <div className="col-sm-4 mb-2" key={document.id}>
+          <div
+            className="col-sm-4 mb-2"
+            key={document.id}
+            onClick={() => {
+              renderDocument(document.id);
+            }}
+          >
             <div className="card">
               <div className="card-body">
                 <h5 className="card-title text-primary">{document.title}</h5>
@@ -75,7 +87,9 @@ function DocumentList({ documents }) {
                             style={styles.deleteIcon}
                             data-toggle="tooltip"
                             title="Delete Document"
-                            onClick={() => {
+                            id="delete-icon"
+                            onClick={e => {
+                              e.stopPropagation();
                               swalWithBootstrapButtons
                                 .fire({
                                   title: 'Are you sure?',
@@ -145,7 +159,8 @@ function DocumentList({ documents }) {
 }
 
 DocumentList.propTypes = {
-  documents: PropTypes.array
+  documents: PropTypes.array,
+  history: PropTypes.object
 };
 
-export default DocumentList;
+export default withRouter(DocumentList);
