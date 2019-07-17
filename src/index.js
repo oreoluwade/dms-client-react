@@ -13,7 +13,8 @@ import {
   faTrashAlt,
   faUpload,
   faImage,
-  faEye
+  faEye,
+  faUserCircle
 } from '@fortawesome/free-solid-svg-icons';
 import App from './components/app';
 import client from './apollo-client';
@@ -25,7 +26,8 @@ library.add(
   faTrashAlt,
   faUpload,
   faImage,
-  faEye
+  faEye,
+  faUserCircle
 );
 
 render(

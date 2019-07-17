@@ -4,11 +4,27 @@ import { useApolloClient } from 'react-apollo-hooks';
 import { Link, withRouter } from 'react-router-dom';
 import { UserContext } from '../contexts';
 import { clearStorage } from '../util';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 const styles = {
   white: {
     color: 'white',
     fontSize: '1.5rem'
+  },
+  homeLink: {
+    textDecoration: 'none',
+    color: 'white'
+  },
+  headerAvatar: {
+    borderRadius: '3rem',
+    height: '3rem',
+    width: '3rem',
+    objectFit: 'cover',
+    marginRight: '3.1px'
+  },
+  popDown: {
+    minWidth: '8rem',
+    width: '8rem'
   }
 };
 
@@ -30,8 +46,13 @@ function Header({ history, location }) {
   };
 
   return (
-    <nav className="navbar navbar-dark bg-dark">
-      <h1 className="navbar-brand font-weight-bold display-4">DMS</h1>
+    <nav
+      className="navbar navbar-inverse navbar-fixed-top bg-dark"
+      role="navigation"
+    >
+      <Link to="/" style={styles.homeLink}>
+        <h1 className="navbar-brand font-weight-bold display-4">DMS</h1>
+      </Link>
       <ul className="nav justify-content-center" style={styles.white}>
         {shouldShowTabs && (
           <Fragment>
@@ -64,15 +85,45 @@ function Header({ history, location }) {
       </ul>
 
       <ul className="nav justify-content-end">
-        <li className="nav-item">
+        <li className="nav-item dropdown">
           {isAuthenticated ? (
-            <span
-              className="text-monospace"
-              style={styles.white}
-              onClick={logout}
-            >
-              LOGOUT
-            </span>
+            <Fragment>
+              <a
+                className="nav-link dropdown-toggle"
+                href="#"
+                id="navbarDropdown"
+                role="button"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+                style={styles.homeLink}
+              >
+                {user ? (
+                  <img src={user && user.avatar} style={styles.headerAvatar} />
+                ) : (
+                  <FontAwesomeIcon
+                    icon="user-circle"
+                    className="fa-3x mr-1"
+                    color="white"
+                  />
+                )}
+              </a>
+              <div
+                className="dropdown-menu"
+                aria-labelledby="navbarDropdown"
+                style={styles.popDown}
+              >
+                <Link to="/profile" className="dropdown-item mb-4">
+                  Profile
+                </Link>
+                <Link to="/documents" className="dropdown-item mb-4">
+                  Documents
+                </Link>
+                <span className="dropdown-item" onClick={logout}>
+                  Logout
+                </span>
+              </div>
+            </Fragment>
           ) : (
             <Link to="/login" className="nav-link">
               <span className="text-monospace" style={styles.white}>
