@@ -49,27 +49,27 @@ const styles = {
     height: '100vh',
     maxHeight: '100vh'
   },
-  routeBody: {
-    height: '100vh'
+  body: {
+    height: '80vh'
   }
 };
 
 const App = () => {
   return (
     <div
-      className="container-fluid text-monospace d-flex flex-column align-items-stretch"
+      className="container-fluid text-monospace d-flex flex-column"
       style={styles.app}
     >
       <Suspense fallback={<Loader />}>
         <UserProvider>
           <Router>
-            <div className="row">
-              <div className="col">
+            <div className="row mb-auto">
+              <div className="col-sm-12">
                 <Header />
               </div>
             </div>
-            <div className="row">
-              <div className="col" style={styles.routeBody}>
+            <div className="row" style={styles.body}>
+              <div className="col-sm-12">
                 <Switch>
                   <Route path="/" exact component={HomePage} />
                   <Route path={['/login', '/signup']} component={Auth} />
@@ -91,8 +91,8 @@ const App = () => {
                 </Switch>
               </div>
             </div>
-            <div className="row mt-auto">
-              <div className="col">
+            <div className="row">
+              <div className="col-sm-12">
                 <CreateDocumentButton />
               </div>
             </div>

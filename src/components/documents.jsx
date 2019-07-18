@@ -5,6 +5,13 @@ import Loader from './loader';
 import { filterDocuments } from '../util';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
+const styles = {
+  docsBody: {
+    overflowY: 'scroll',
+    maxHeight: '80vh'
+  }
+};
+
 function DocumentsPage() {
   const { user, allDocuments } = useContext(UserContext);
 
@@ -76,7 +83,7 @@ function DocumentsPage() {
         </ul>
       </div>
       <hr />
-      <div className="tab-content" id="docsTabContent">
+      <div className="tab-content" id="docsTabContent" style={styles.docsBody}>
         <div
           className="tab-pane fade show active"
           id="public"

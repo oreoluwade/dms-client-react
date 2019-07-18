@@ -38,7 +38,6 @@ function Login({ history }) {
       onCompleted={data => {
         handleAuthStatusChange(true);
         addToStorage({ token: data.login.token });
-        client.resetStore();
         history.push('/documents');
       }}
       onError={error => {
