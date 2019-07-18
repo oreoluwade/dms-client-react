@@ -75,6 +75,7 @@ function DocumentsPage() {
           </li>
         </ul>
       </div>
+      <hr />
       <div className="tab-content" id="docsTabContent">
         <div
           className="tab-pane fade show active"
