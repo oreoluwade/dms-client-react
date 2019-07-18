@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Swal from 'sweetalert2';
 import { Mutation } from 'react-apollo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { standardizeDate } from '../util';
 import { UserContext } from '../contexts';
-import RenderIconLink from './render-icon-link';
 import { DELETE_DOCUMENT, GET_ALL_DOCUMENTS } from '../queries';
 import renderContentPart from '../util/render-content-part';
 
@@ -21,39 +21,62 @@ const styles = {
   openDocLink: {
     textDecoration: 'none'
   },
-  openIcon: {
-    color: 'black'
-  },
   deleteIcon: {
-    color: 'red'
+    color: 'red',
+    cursor: 'pointer'
   },
-  editIcon: {
-    color: 'green'
+  content: {
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis'
+  },
+  eyeIcon: {
+    cursor: 'pointer'
   }
 };
 
-function DocumentList({ documents }) {
+function DocumentList({ documents, history }) {
   const { user } = useContext(UserContext);
 
+  const renderDocument = id => {
+    history.push(`/document/${id}`);
+  };
+
   return (
-    <div className="row mt-5">
+    <div className="row mt-5 d-flex justify-content-between align-items-start">
       {documents.map(document => {
         const isDocOwner = user.id === document.owner.id;
 
         return (
-          <div className="col-sm-4 mb-2" key={document.id}>
+          <div
+            className="col-sm-4 mt-4"
+            key={document.id}
+            onClick={() => {
+              renderDocument(document.id);
+            }}
+          >
             <div className="card">
               <div className="card-body">
-                <h5 className="card-title text-primary">{document.title}</h5>
-                <p className="card-text text-dark font-weight-bold">
+                <h5 className="card-title text-primary" style={styles.content}>
+                  {document.title}
+                </h5>
+                <p
+                  className="card-text text-dark font-weight-bold"
+                  style={styles.content}
+                >
                   {renderContentPart(document.content)}
                 </p>
                 <span className="d-flex justify-content-between align-items-center">
-                  <p className="font-italic text-muted m-0">
-                    {`Created on ${standardizeDate(document.createdAt)}`}
+                  <p
+                    className="font-italic text-muted m-0"
+                    style={styles.content}
+                  >
+                    {`Created by ${
+                      document.owner.username
+                    } on ${standardizeDate(document.createdAt)}`}
                   </p>
                   {isDocOwner ? (
-                    <span className="d-flex">
+                    <span className="d-flex ml-4">
                       <Mutation
                         mutation={DELETE_DOCUMENT}
                         onCompleted={data => {
@@ -71,11 +94,13 @@ function DocumentList({ documents }) {
                         {mutate => (
                           <FontAwesomeIcon
                             icon="trash-alt"
-                            className="fa-2x"
+                            className="fa-2x mr-3"
                             style={styles.deleteIcon}
                             data-toggle="tooltip"
                             title="Delete Document"
-                            onClick={() => {
+                            id="delete-icon"
+                            onClick={e => {
+                              e.stopPropagation();
                               swalWithBootstrapButtons
                                 .fire({
                                   title: 'Are you sure?',
@@ -117,21 +142,23 @@ function DocumentList({ documents }) {
                           />
                         )}
                       </Mutation>
-                      <RenderIconLink
-                        document={document}
-                        iconStyle={styles.editIcon}
-                        iconClass="fa-2x ml-4"
-                        icon="edit"
-                        iconTitleTip="Edit Document"
+                      <FontAwesomeIcon
+                        className="fa-2x"
+                        color="green"
+                        icon="eye"
+                        data-toggle="tooltip"
+                        title="Edit Document"
+                        style={styles.eyeIcon}
                       />
                     </span>
                   ) : (
-                    <RenderIconLink
-                      document={document}
-                      iconStyle={styles.openIcon}
-                      iconClass="fa-2x"
-                      icon="folder-open"
-                      iconTitleTip="Open Document"
+                    <FontAwesomeIcon
+                      className="fa-2x ml-4"
+                      color="black"
+                      icon="eye"
+                      data-toggle="tooltip"
+                      title="Open Document"
+                      style={styles.eyeIcon}
                     />
                   )}
                 </span>
@@ -145,7 +172,8 @@ function DocumentList({ documents }) {
 }
 
 DocumentList.propTypes = {
-  documents: PropTypes.array
+  documents: PropTypes.array,
+  history: PropTypes.object
 };
 
-export default DocumentList;
+export default withRouter(DocumentList);

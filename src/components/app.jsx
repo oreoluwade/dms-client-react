@@ -1,4 +1,4 @@
-import React, { Fragment, Suspense, lazy } from 'react';
+import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Loader from './loader';
 const Header = lazy(() => import(/* webpackChunkName: "header" */ './header'));
@@ -46,39 +46,56 @@ const UpdateDocumentPage = lazy(() =>
 const styles = {
   app: {
     backgroundColor: '#AFAFAF',
+    height: '100vh',
+    maxHeight: '100vh'
+  },
+  routeBody: {
     height: '100vh'
   }
 };
 
 const App = () => {
   return (
-    <div className="container-fluid text-monospace" style={styles.app}>
+    <div
+      className="container-fluid text-monospace d-flex flex-column align-items-stretch"
+      style={styles.app}
+    >
       <Suspense fallback={<Loader />}>
         <UserProvider>
           <Router>
-            <Fragment>
-              <Header />
-              <Switch>
-                <Route path="/" exact component={HomePage} />
-                <Route path={['/login', '/signup']} component={Auth} />
-                <ProtectedRoute path="/documents" component={DocumentsPage} />
-                <ProtectedRoute path="/users" component={ManageUsers} />
-                <ProtectedRoute path="/statistics" component={Statistics} />
-                <ProtectedRoute path="/profile" component={Profile} />
-                <ProtectedRoute
-                  path="/create-document"
-                  exact
-                  component={CreateDocumentPage}
-                />
-                <ProtectedRoute
-                  path="/document/:documentId"
-                  exact
-                  component={UpdateDocumentPage}
-                />
-                <Route component={NotFound} />
-              </Switch>
-              <CreateDocumentButton />
-            </Fragment>
+            <div className="row">
+              <div className="col">
+                <Header />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col" style={styles.routeBody}>
+                <Switch>
+                  <Route path="/" exact component={HomePage} />
+                  <Route path={['/login', '/signup']} component={Auth} />
+                  <ProtectedRoute path="/documents" component={DocumentsPage} />
+                  <ProtectedRoute path="/users" component={ManageUsers} />
+                  <ProtectedRoute path="/statistics" component={Statistics} />
+                  <ProtectedRoute path="/profile" component={Profile} />
+                  <ProtectedRoute
+                    path="/create-document"
+                    exact
+                    component={CreateDocumentPage}
+                  />
+                  <ProtectedRoute
+                    path="/document/:documentId"
+                    exact
+                    component={UpdateDocumentPage}
+                  />
+                  <Route component={NotFound} />
+                </Switch>
+              </div>
+            </div>
+            <div className="row mt-auto">
+              <div className="col">
+                <CreateDocumentButton />
+              </div>
+            </div>
           </Router>
         </UserProvider>
       </Suspense>

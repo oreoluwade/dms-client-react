@@ -51,6 +51,7 @@ export const GET_ALL_DOCUMENTS = gql`
       owner {
         id
         role
+        username
       }
     }
   }
@@ -86,6 +87,7 @@ export const CREATE_DOCUMENT = gql`
       updatedAt
       owner {
         id
+        username
       }
     }
   }
@@ -102,6 +104,7 @@ export const GET_ONE_DOCUMENT = gql`
       access
       owner {
         id
+        username
       }
     }
   }
@@ -123,6 +126,7 @@ export const UPDATE_DOCUMENT = gql`
       access
       owner {
         id
+        username
       }
     }
   }

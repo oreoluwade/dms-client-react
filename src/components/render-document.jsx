@@ -11,12 +11,12 @@ const styles = {
   editorContainer: {
     minHeight: '70vh'
   },
-  submitButton: {
-    width: '10vw'
-  },
   titleField: {
     height: '3rem',
-    fontSize: '1.5rem'
+    fontSize: '1.5rem',
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis'
   }
 };
 
@@ -34,7 +34,8 @@ function RenderDocument({
   handleDocumentDataChange,
   mutationType,
   variables,
-  onCompletedCallback
+  onCompletedCallback,
+  documentInfo
 }) {
   const isCreateDocumentPage = location.pathname === '/create-document';
 
@@ -44,7 +45,7 @@ function RenderDocument({
       style={styles.editorContainer}
     >
       <div className="row pl-0 pr-0 mt-3 mb-2">
-        <div className="col-9 pr-0">
+        <div className="col-sm-9">
           <input
             type="text"
             className="form-control"
@@ -57,7 +58,7 @@ function RenderDocument({
             style={styles.titleField}
           />
         </div>
-        <div className="col">
+        <div className="col-sm-3">
           <select
             className="custom-select col"
             id="inputGroupSelect"
@@ -73,62 +74,70 @@ function RenderDocument({
           </select>
         </div>
       </div>
-      <CKEditor
-        editor={ClassicEditor}
-        data={documentBody}
-        onInit={editor => {
-          // "editor" available when needed.
-          console.log('Editor is ready to use!', editor);
-        }}
-        onChange={handleDocumentDataChange}
-        disabled={!isDocumentOwner && !isCreateDocumentPage}
-      />
-      {isDocumentOwner || isCreateDocumentPage ? (
-        <Mutation
-          mutation={mutation}
-          onCompleted={() => {
-            if (onCompletedCallback) {
-              onCompletedCallback();
-            }
-            Swal.fire({
-              position: 'top-end',
-              type: 'success',
-              title: alertTitle,
-              showConfirmButton: false,
-              timer: 1500,
-              toast: true
-            });
-            history.push('/documents');
-          }}
-          refetchQueries={() => [
-            {
-              query: GET_ALL_DOCUMENTS
-            }
-          ]}
-          onError={error => {
-            console.log('error', error.message);
-          }}
-        >
-          {(mutate, { loading }) => (
-            <button
-              type="button"
-              className="btn btn-primary btn-lg mt-3 ml-auto mr-0 mb-3"
-              style={styles.submitButton}
-              onClick={async event => {
-                event.preventDefault();
-                await mutate({ variables });
+      <div className="row">
+        <div className="col-sm-12">
+          <CKEditor
+            editor={ClassicEditor}
+            data={documentBody}
+            onInit={editor => {
+              // "editor" available when needed.
+              console.log('Editor is ready to use!', editor);
+            }}
+            onChange={handleDocumentDataChange}
+            disabled={!isDocumentOwner && !isCreateDocumentPage}
+          />
+          {isDocumentOwner || isCreateDocumentPage ? (
+            <Mutation
+              mutation={mutation}
+              onCompleted={() => {
+                if (onCompletedCallback) {
+                  onCompletedCallback();
+                }
+                Swal.fire({
+                  position: 'top-end',
+                  type: 'success',
+                  title: alertTitle,
+                  showConfirmButton: false,
+                  timer: 1500,
+                  toast: true
+                });
+                history.push('/documents');
               }}
-              disabled={loading}
+              refetchQueries={() => [
+                {
+                  query: GET_ALL_DOCUMENTS
+                }
+              ]}
+              onError={error => {
+                console.log('error', error.message);
+              }}
             >
-              {mutationType}
-            </button>
+              {(mutate, { loading }) => (
+                <button
+                  type="button"
+                  className="btn btn-primary btn-lg mt-3"
+                  onClick={async event => {
+                    event.preventDefault();
+                    await mutate({ variables });
+                  }}
+                  disabled={loading}
+                >
+                  {mutationType}
+                </button>
+              )}
+            </Mutation>
+          ) : (
+            <span className="mt-3 d-flex">
+              <span className="font-italic text-info">
+                This document is Read only
+              </span>
+              <span className="font-italic ml-auto">
+                Created by {documentInfo}
+              </span>
+            </span>
           )}
-        </Mutation>
-      ) : (
-        <span className="mr-3 ml-auto font-italic text-info">
-          This document is Read only
-        </span>
-      )}
+        </div>
+      </div>
     </div>
   );
 }
@@ -147,7 +156,8 @@ RenderDocument.propTypes = {
   mutationType: PropTypes.string,
   variables: PropTypes.object,
   location: PropTypes.object,
-  onCompletedCallback: PropTypes.func
+  onCompletedCallback: PropTypes.func,
+  documentInfo: PropTypes.string
 };
 
 export default withRouter(RenderDocument);
