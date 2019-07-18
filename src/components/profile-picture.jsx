@@ -7,9 +7,6 @@ import { UserContext } from '../contexts';
 import { UPDATE_PROFILE, GET_USER_DETAILS } from '../queries';
 
 const styles = {
-  imageWrapper: {
-    borderRadius: '10rem'
-  },
   noImageSelectedDiv: {
     height: '10rem',
     width: '10rem',
@@ -60,16 +57,13 @@ function ProfilePicture() {
   };
 
   return (
-    <div
-      className="d-flex flex-column m-auto align-items-center"
-      style={styles.imageWrapper}
-    >
+    <div className="col-sm-3 d-flex flex-column align-items-center bg-light ml-3">
       {imageHasBeenSelected || user.avatar ? (
         <img
           src={selectedImageUrl || user.avatar}
           width="200"
           height="200"
-          className="mb-3"
+          className="mb-3 mt-3"
           style={styles.imageLoaded}
         />
       ) : (
