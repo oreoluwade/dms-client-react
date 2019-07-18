@@ -71,7 +71,9 @@ function DocumentList({ documents, history }) {
                     className="font-italic text-muted m-0"
                     style={styles.content}
                   >
-                    {`Created on ${standardizeDate(document.createdAt)}`}
+                    {`Created by ${
+                      document.owner.username
+                    } on ${standardizeDate(document.createdAt)}`}
                   </p>
                   {isDocOwner ? (
                     <span className="d-flex ml-4">
