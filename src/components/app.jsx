@@ -46,6 +46,10 @@ const UpdateDocumentPage = lazy(() =>
 const styles = {
   app: {
     backgroundColor: '#AFAFAF',
+    height: '100vh',
+    maxHeight: '100vh'
+  },
+  routeBody: {
     height: '100vh'
   }
 };
@@ -65,7 +69,7 @@ const App = () => {
               </div>
             </div>
             <div className="row">
-              <div className="col">
+              <div className="col" style={styles.routeBody}>
                 <Switch>
                   <Route path="/" exact component={HomePage} />
                   <Route path={['/login', '/signup']} component={Auth} />
