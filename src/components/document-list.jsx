@@ -6,7 +6,6 @@ import { Mutation } from 'react-apollo';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { standardizeDate } from '../util';
 import { UserContext } from '../contexts';
-import RenderIconLink from './render-icon-link';
 import { DELETE_DOCUMENT, GET_ALL_DOCUMENTS } from '../queries';
 import renderContentPart from '../util/render-content-part';
 
@@ -22,15 +21,17 @@ const styles = {
   openDocLink: {
     textDecoration: 'none'
   },
-  openIcon: {
-    color: 'black'
-  },
   deleteIcon: {
     color: 'red',
     cursor: 'pointer'
   },
-  editIcon: {
-    color: 'green'
+  content: {
+    overflow: 'hidden',
+    whiteSpace: 'nowrap',
+    textOverflow: 'ellipsis'
+  },
+  eyeIcon: {
+    cursor: 'pointer'
   }
 };
 
@@ -42,13 +43,13 @@ function DocumentList({ documents, history }) {
   };
 
   return (
-    <div className="row mt-5">
+    <div className="row mt-5 d-flex justify-content-between align-items-start">
       {documents.map(document => {
         const isDocOwner = user.id === document.owner.id;
 
         return (
           <div
-            className="col-sm-4 mb-2"
+            className="col-sm-4 mt-4"
             key={document.id}
             onClick={() => {
               renderDocument(document.id);
@@ -56,16 +57,24 @@ function DocumentList({ documents, history }) {
           >
             <div className="card">
               <div className="card-body">
-                <h5 className="card-title text-primary">{document.title}</h5>
-                <p className="card-text text-dark font-weight-bold">
+                <h5 className="card-title text-primary" style={styles.content}>
+                  {document.title}
+                </h5>
+                <p
+                  className="card-text text-dark font-weight-bold"
+                  style={styles.content}
+                >
                   {renderContentPart(document.content)}
                 </p>
                 <span className="d-flex justify-content-between align-items-center">
-                  <p className="font-italic text-muted m-0">
+                  <p
+                    className="font-italic text-muted m-0"
+                    style={styles.content}
+                  >
                     {`Created on ${standardizeDate(document.createdAt)}`}
                   </p>
                   {isDocOwner ? (
-                    <span className="d-flex">
+                    <span className="d-flex ml-4">
                       <Mutation
                         mutation={DELETE_DOCUMENT}
                         onCompleted={data => {
@@ -83,7 +92,7 @@ function DocumentList({ documents, history }) {
                         {mutate => (
                           <FontAwesomeIcon
                             icon="trash-alt"
-                            className="fa-2x"
+                            className="fa-2x mr-3"
                             style={styles.deleteIcon}
                             data-toggle="tooltip"
                             title="Delete Document"
@@ -131,21 +140,23 @@ function DocumentList({ documents, history }) {
                           />
                         )}
                       </Mutation>
-                      <RenderIconLink
-                        document={document}
-                        iconStyle={styles.editIcon}
-                        iconClass="fa-2x ml-4"
+                      <FontAwesomeIcon
+                        className="fa-2x"
+                        color="green"
                         icon="eye"
-                        iconTitleTip="Edit Document"
+                        data-toggle="tooltip"
+                        title="Edit Document"
+                        style={styles.eyeIcon}
                       />
                     </span>
                   ) : (
-                    <RenderIconLink
-                      document={document}
-                      iconStyle={styles.openIcon}
-                      iconClass="fa-2x"
+                    <FontAwesomeIcon
+                      className="fa-2x ml-4"
+                      color="black"
                       icon="eye"
-                      iconTitleTip="Open Document"
+                      data-toggle="tooltip"
+                      title="Open Document"
+                      style={styles.eyeIcon}
                     />
                   )}
                 </span>

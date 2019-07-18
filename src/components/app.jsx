@@ -52,33 +52,46 @@ const styles = {
 
 const App = () => {
   return (
-    <div className="container-fluid text-monospace" style={styles.app}>
+    <div
+      className="container-fluid text-monospace d-flex flex-column align-items-stretch"
+      style={styles.app}
+    >
       <Suspense fallback={<Loader />}>
         <UserProvider>
           <Router>
-            <Fragment>
-              <Header />
-              <Switch>
-                <Route path="/" exact component={HomePage} />
-                <Route path={['/login', '/signup']} component={Auth} />
-                <ProtectedRoute path="/documents" component={DocumentsPage} />
-                <ProtectedRoute path="/users" component={ManageUsers} />
-                <ProtectedRoute path="/statistics" component={Statistics} />
-                <ProtectedRoute path="/profile" component={Profile} />
-                <ProtectedRoute
-                  path="/create-document"
-                  exact
-                  component={CreateDocumentPage}
-                />
-                <ProtectedRoute
-                  path="/document/:documentId"
-                  exact
-                  component={UpdateDocumentPage}
-                />
-                <Route component={NotFound} />
-              </Switch>
-              <CreateDocumentButton />
-            </Fragment>
+            <div className="row">
+              <div className="col">
+                <Header />
+              </div>
+            </div>
+            <div className="row">
+              <div className="col">
+                <Switch>
+                  <Route path="/" exact component={HomePage} />
+                  <Route path={['/login', '/signup']} component={Auth} />
+                  <ProtectedRoute path="/documents" component={DocumentsPage} />
+                  <ProtectedRoute path="/users" component={ManageUsers} />
+                  <ProtectedRoute path="/statistics" component={Statistics} />
+                  <ProtectedRoute path="/profile" component={Profile} />
+                  <ProtectedRoute
+                    path="/create-document"
+                    exact
+                    component={CreateDocumentPage}
+                  />
+                  <ProtectedRoute
+                    path="/document/:documentId"
+                    exact
+                    component={UpdateDocumentPage}
+                  />
+                  <Route component={NotFound} />
+                </Switch>
+              </div>
+            </div>
+            <div className="row mt-auto">
+              <div className="col">
+                <CreateDocumentButton />
+              </div>
+            </div>
           </Router>
         </UserProvider>
       </Suspense>
