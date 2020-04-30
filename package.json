@@ -47,7 +47,7 @@
     "file-loader": "^4.0.0",
     "graphql": "^14.4.1",
     "graphql-tag": "^2.10.1",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "jsonwebtoken": "^8.5.1",
     "popper.js": "^1.15.0",
     "react": "^16.8.6",
